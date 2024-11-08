@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@AllArgsConstructor
+@AllArgsConstructor()
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
@@ -21,8 +21,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;

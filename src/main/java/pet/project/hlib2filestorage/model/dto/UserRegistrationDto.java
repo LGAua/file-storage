@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 public class UserRegistrationDto {
 
-    @NotBlank(message = "Email can nit be blank")
+    @NotBlank(message = "Email can not be blank")
     private String username;
 
-    @NotBlank(message = "Email can nit be blank")
+    @NotBlank(message = "Email can not be blank")
     @Email(message = "Invalid email")
     private String email;
 
