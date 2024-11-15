@@ -3,7 +3,6 @@ package pet.project.hlib2filestorage.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,12 +29,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/home").hasAuthority("ROLE_USER")
+                        .requestMatchers("/home").hasRole("USER")
                         .anyRequest().permitAll()
                 ).formLogin(login -> login
                         .loginPage("/sign-in")
-                        .defaultSuccessUrl("/home",true)
+                        .failureUrl("/sign-in/not-found")
+                        .defaultSuccessUrl("/home")
+                ).exceptionHandling(ex -> ex
+                        .accessDeniedPage("/sign-in/error")
                 );
+
 
         return http.build();
     }
