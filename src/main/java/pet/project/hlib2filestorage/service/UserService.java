@@ -3,12 +3,11 @@ package pet.project.hlib2filestorage.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pet.project.hlib2filestorage.model.dto.UserLoginDto;
-import pet.project.hlib2filestorage.model.dto.UserRegistrationDto;
+import pet.project.hlib2filestorage.exception.DatabaseException;
+import pet.project.hlib2filestorage.model.dto.auth.UserRegistrationDto;
 import pet.project.hlib2filestorage.model.entity.User;
 import pet.project.hlib2filestorage.repository.UserRepository;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -26,17 +25,10 @@ public class UserService {
                 .roles(Set.of("ROLE_USER"))
                 .build();
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new DatabaseException("User with such email or username already exist");
+        }
     }
-
-//    public boolean verifyCredentials(UserLoginDto userLoginDto) {
-//        User user = userRepository.findByEmail(userLoginDto.getEmail());
-//
-//        return isIdentical(userLoginDto, user);
-//    }
-//
-//    private boolean isIdentical(UserLoginDto dto, User user) {
-//        return dto.getUsername().equals(user.getEmail()) &&
-//                dto.getPassword().equals(user.getPassword());
-//    }
 }

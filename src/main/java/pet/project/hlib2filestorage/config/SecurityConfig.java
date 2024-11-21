@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 @Configuration
 @EnableWebSecurity
@@ -26,15 +27,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setMatchingRequestParameterName(null);
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/home").hasRole("USER")
-                        .anyRequest().permitAll()
+                        .requestMatchers("/sign-in","sign-up").permitAll()
+                        .anyRequest().hasRole("USER")
                 ).formLogin(login -> login
                         .loginPage("/sign-in")
                         .failureUrl("/sign-in/not-found")
                         .defaultSuccessUrl("/home")
+                ).requestCache((cache) -> cache
+                        .requestCache(requestCache)
                 ).exceptionHandling(ex -> ex
                         .accessDeniedPage("/sign-in/error")
                 );

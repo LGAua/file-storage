@@ -1,0 +1,71 @@
+package pet.project.hlib2filestorage.repository;
+
+import jakarta.validation.ConstraintViolationException;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
+import pet.project.hlib2filestorage.model.entity.User;
+
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest
+class UserRepositoryTest {
+
+
+    //todo Добавить в класпасс H2 дб и тогда должно заработать (сейчас пытается сохранять в основную бд т.к. Replace.NONE)
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private final User userSavedInDatabase = User.builder()
+            .username("existingUser")
+            .email("existingUser@test.com")
+            .roles(Set.of("ROLE_USER"))
+            .build();
+
+    private final User userWithInvalidCredentials = User.builder()
+            .username("existingUser")
+            .email("existingUser@test.com")
+            .roles(Set.of("ROLE_USER"))
+            .build();
+
+
+    @BeforeEach
+    @Sql
+    void setUp() {
+        userRepository.save(userSavedInDatabase);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
+    }
+
+    @Test
+    void findByEmail() {
+        User userFoundByEmail = userRepository.findByEmail("existingUser@test.com");
+
+        assertThat(userFoundByEmail).isEqualTo(userSavedInDatabase);
+    }
+
+    @Test
+    void saveUserWithViolatedConstraintsFields() {
+        assertThrows(ConstraintViolationException.class, () -> userRepository.save(userWithInvalidCredentials));
+    }
+
+    @Test
+    void saveUserWithCorrectField() {
+        assertDoesNotThrow(() -> userRepository.save(userWithInvalidCredentials));
+    }
+
+}

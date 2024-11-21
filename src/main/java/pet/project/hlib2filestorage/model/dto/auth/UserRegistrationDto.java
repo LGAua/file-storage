@@ -1,11 +1,14 @@
-package pet.project.hlib2filestorage.model.dto;
+package pet.project.hlib2filestorage.model.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationDto {
 
     @NotBlank(message = "Email can not be blank")

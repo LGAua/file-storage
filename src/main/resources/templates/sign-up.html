@@ -22,5 +22,8 @@
 <div th:if="${errors}" th:each="error : ${errors}">
     <p style="color:red" th:text="${error.getDefaultMessage()}"></p>
 </div>
+<div th:if="${exception}">
+    <p style="color:red" th:text="${exception}"></p>
+</div>
 </body>
 </html>

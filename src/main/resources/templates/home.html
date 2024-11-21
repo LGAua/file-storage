@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>FileStorage</title>
 </head>
+
+<h2>Folder creation</h2>
+
 <body>
-HOME PAGE
+<form th:action="@{/home/create-folder}" th:object="${folderCreateDto}" method="post">
+    <label for="folderName">Enter File Name
+        <input type="text" id="folderName" name="fileName" th:field="*{folderName}" required/>
+        <button type="submit" class="btn btn-primary btn-block">Create File</button>
+    </label><br>
+</form>
+</body>
+
+<h2>File upload</h2>
+
+<form method="post" th:action="@{/home/upload-file}" th:object="${fileUploadDto}" enctype="multipart/form-data">
+    <div>
+        <label for="fileName">Choose folder name</label>
+        <input type="text" id="fileName" name="fileName" th:field="*{folderName}" required/>
+        <label for="object">Choose file to upload</label>
+        <input type="file" id="object" name="file" th:field="*{file}" accept="multipart/form-data" required/>
+        <input name="username" th:value="${#authentication.name}" type="hidden"/>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+<div th:if="${uploadFileSuccess}" th:text="${uploadFileSuccess}"></div>
+
+<h2>Folder upload</h2>
+
+<form method="post" th:action="@{/home/upload-folder}" th:object="${folderUploadDto}" enctype="multipart/form-data">
+    <div>
+        <label for="folder">Choose folder to upload</label>
+        <input type="file" id="folder" name="folder" th:field="*{folder}" webkitdirectory accept="multipart/form-data"
+               required/>
+        <input name="username" th:value="${#authentication.name}" type="hidden"/>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+<div th:if="${uploadFolderSuccess}" th:text="${uploadFolderSuccess}"></div>
+
+<h2>Get list of folders</h2>
+
+<form method="get" th:action="@{/home/folders}" th:object="${folderRequestDto}">
+    <div>
+        <input name="username" th:value="${#authentication.name}" type="hidden"/>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+<div th:if="${folderContentDto}" >
+    <span th:each="breadCrumb : ${folderContentDto.breadCrumbs}">
+        <a th:href="'folder?folderPath=' + ${breadCrumb.value} + '&folderName=' + ${breadCrumb.key} + '&username=' + ${#authentication.name}"
+           th:text="${breadCrumb.key  + ' / '}"></a>
+    </span>
+
+    <div th:each="folder : ${folderContentDto.folders}">
+        <form method="get" th:action="@{/home/folders}" th:object="${folderRequestDto}">
+            <div th:text="${folder.folderName}"></div>
+            <div>
+                <input name="folderName" th:value="${folder.folderName}" type="hidden"/>
+            </div>
+            <div>
+                <input name="folderPath" th:value="${folder.folderPath}" type="hidden"/>
+            </div>
+            <div>
+                <input name="username" th:value="${#authentication.name}" type="hidden"/>
+            </div>
+            <div>
+                <button type="submit">Get files</button>
+            </div>
+        </form>
+    </div>
+
+    <div th:each="file : ${folderContentDto.files}">
+        <form method="get" th:action="@{/home/folders/file}" th:object="${fileRequestDto}">
+            <div th:text="${file.fileName}"></div>
+            <div>
+                <input name="fileName" th:value="${file.fileName}" type="hidden"/>
+            </div>
+            <div>
+                <input name="filePath" th:value="${file.filePath}" type="hidden"/>
+            </div>
+            <div>
+                <input name="username" th:value="${#authentication.name}" type="hidden"/>
+            </div>
+            <div>
+                <button type="submit">Get files</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
 </body>
 </html>

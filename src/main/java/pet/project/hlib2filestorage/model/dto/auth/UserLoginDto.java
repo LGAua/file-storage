@@ -1,10 +1,13 @@
-package pet.project.hlib2filestorage.model.dto;
+package pet.project.hlib2filestorage.model.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import pet.project.hlib2filestorage.model.entity.User;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserLoginDto {
 
     @NotBlank

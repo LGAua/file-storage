@@ -18,8 +18,8 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -29,5 +29,6 @@ public class User {
 
     private String password;
 
+    //todo role entity in db
     private Set<String> roles;
 }

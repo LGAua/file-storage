@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: storage
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio2
+    volumes:
+      - minio-data:/data
+    environment:
+      MINIO_ROOT_USER: filestorage
+      MINIO_ROOT_PASSWORD: filestorage
+    command: server /data --console-address :9090
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+
+volumes:
+  postgres-data:
+  minio-data:
