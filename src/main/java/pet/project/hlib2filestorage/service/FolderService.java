@@ -1,13 +1,16 @@
 package pet.project.hlib2filestorage.service;
 
 import io.minio.*;
+import io.minio.errors.*;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pet.project.hlib2filestorage.exception.FileOperationException;
 import pet.project.hlib2filestorage.exception.FolderOperationException;
+import pet.project.hlib2filestorage.model.dto.file.FileRequestDto;
 import pet.project.hlib2filestorage.model.dto.file.FileResponseDto;
 import pet.project.hlib2filestorage.model.dto.folder.FolderContentDto;
 import pet.project.hlib2filestorage.model.dto.folder.FolderRequestDto;
@@ -15,6 +18,9 @@ import pet.project.hlib2filestorage.model.dto.folder.FolderResponseDto;
 import pet.project.hlib2filestorage.model.dto.folder.FolderUploadDto;
 import pet.project.hlib2filestorage.repository.UserRepository;
 
+import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Service
@@ -51,6 +57,21 @@ public class FolderService {
 
     }
 
+    public void createFolder(FolderRequestDto dto) {
+        try {
+            minioClient.putObject(
+                    PutObjectArgs.builder()
+                            .bucket(defaultBucketName)
+                            .object(createEmptyFolderPath(dto))
+                            .stream(new ByteArrayInputStream("Folder placeholder".getBytes()), "Folder placeholder".length(), -1)
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new FolderOperationException("Can not create folder");
+        }
+
+    }
+
     public FolderContentDto getFolderContent(FolderRequestDto folderRequestDto) {
         List<FileResponseDto> files = fileService.getFilesInsideFolder(folderRequestDto);
         List<FolderResponseDto> folders = getFoldersInsideFolder(folderRequestDto);
@@ -65,7 +86,7 @@ public class FolderService {
         );
     }
 
-    public List<FolderResponseDto> getFoldersInsideFolder(FolderRequestDto dto) {
+    private List<FolderResponseDto> getFoldersInsideFolder(FolderRequestDto dto) {
         List<FolderResponseDto> folderList = new ArrayList<>();
         String path = createAbsolutePath(dto);
 
@@ -80,7 +101,7 @@ public class FolderService {
             try {
                 String objectPath = object.get().objectName();
                 if (object.get().isDir()) {
-                    String folderName = objectPath.substring(objectPath.indexOf("/") + 1, objectPath.lastIndexOf("/"));
+                    String folderName = objectPath.substring(path.length(), objectPath.lastIndexOf("/"));
                     folderList.add(new FolderResponseDto(objectPath, folderName));
                 }
             } catch (Exception e) {
@@ -91,18 +112,6 @@ public class FolderService {
         return folderList;
     }
 
-    private Long getIdByUsername(String username) {
-        return userRepository.findByUsername(username).getId();
-    }
-
-    private String createAbsolutePath(FolderRequestDto dto) {
-        Long id = getIdByUsername(dto.getUsername());
-        String path = dto.getFolderPath() == null ? rootFolderName : dto.getFolderPath();
-
-        return path.formatted(id);
-    }
-
-    // user-1-file/lifeboat/img_01
     private Map<String, String> createBreadCrumbs(String folderPath) {
         Map<String, String> breadCrumbsAndFolderPath = new TreeMap<>(Comparator.comparingInt(folderPath::indexOf));
 
@@ -116,5 +125,31 @@ public class FolderService {
             breadCrumbsAndFolderPath.put(breadCrumb, path);
         }
         return breadCrumbsAndFolderPath;
+    }
+
+    private String createAbsolutePath(FolderRequestDto dto) {
+        Long id = getIdByUsername(dto.getUsername());
+        String path = dto.getFolderPath() == null ? rootFolderName : dto.getFolderPath();
+        return path.formatted(id);
+    }
+
+    private String createEmptyFolderPath(FolderRequestDto dto) {
+        return createAbsolutePath(dto) + dto.getFolderName() + "/";
+    }
+
+    private Long getIdByUsername(String username) {
+        return userRepository.findByUsername(username).getId();
+    }
+
+    public void deleteFolder(FolderRequestDto fileRequestDto) {
+        try {
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(defaultBucketName)
+                            .object(fileRequestDto.getFolderPath())
+                            .build());
+        } catch (Exception e){
+            throw new FileOperationException("Can not delete folder");
+        }
     }
 }

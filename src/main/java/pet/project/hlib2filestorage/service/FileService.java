@@ -95,11 +95,12 @@ public class FileService {
                 String objectPath = object.get().objectName();
                 if (!object.get().isDir()) {
                     String fileName = objectPath.substring(objectPath.lastIndexOf("/") + 1);
-
-                    fileList.add(new FileResponseDto(
-                            objectPath,
-                            fileName
-                    ));
+                    if (!fileName.isBlank()) {
+                        fileList.add(new FileResponseDto(
+                                objectPath,
+                                fileName
+                        ));
+                    }
                 }
             } catch (Exception e) {
                 log.error("Can not retrieve folder list");
@@ -110,8 +111,16 @@ public class FileService {
 
     }
 
-    private Long getIdByUsername(String username) {
-        return userRepository.findByUsername(username).getId();
+    public void deleteFile(FileRequestDto fileRequestDto) {
+        try {
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(defaultBucketName)
+                            .object(fileRequestDto.getFilePath())
+                            .build());
+        } catch (Exception e){
+            throw new FileOperationException("Can not delete file");
+        }
     }
 
     private String createAbsolutePath(Long userId, String folderPath) {
@@ -119,8 +128,7 @@ public class FileService {
         return path.formatted(userId);
     }
 
-    public List<String> createBreadCrumbs(String folderPath, String folderName) {
-        String path = folderPath.substring(0, (folderPath.length() - folderName.length()));
-        return List.of(path.split("/"));
+    private Long getIdByUsername(String username) {
+        return userRepository.findByUsername(username).getId();
     }
 }
