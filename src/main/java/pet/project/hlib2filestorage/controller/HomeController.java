@@ -14,7 +14,6 @@ public class HomeController {
     @GetMapping
     public String homePage(Model model) {
 
-        model.addAttribute("folderCreateDto", new FolderCreateDto());
         model.addAttribute("fileUploadDto", new FileUploadDto());
         model.addAttribute("folderUploadDto", new FolderUploadDto());
         model.addAttribute("folderRequestDto", new FolderRequestDto());

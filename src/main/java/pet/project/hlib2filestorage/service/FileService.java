@@ -111,6 +111,23 @@ public class FileService {
 
     }
 
+    public void copyFileToFolder(FileResponseDto dto, String folderPath){
+        GetObjectArgs getObjectArgs = GetObjectArgs.builder()
+                .bucket(defaultBucketName)
+                .object(dto.getFilePath() + dto.getFileName())
+                .build();
+        try (GetObjectResponse object = minioClient.getObject(getObjectArgs)) {
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(defaultBucketName)
+                    .object(folderPath + dto.getFileName())
+                    .stream(object, object.readAllBytes().length, 1)
+                    .build());
+        } catch (Exception e) {
+            throw new FolderOperationException("Can not rename folder");
+        }
+
+    }
+
     public void deleteFile(FileRequestDto fileRequestDto) {
         try {
             minioClient.removeObject(

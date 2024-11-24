@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pet.project.hlib2filestorage.model.dto.folder.FolderContentDto;
-import pet.project.hlib2filestorage.model.dto.folder.FolderRequestDto;
-import pet.project.hlib2filestorage.model.dto.folder.FolderResponseDto;
-import pet.project.hlib2filestorage.model.dto.folder.FolderUploadDto;
+import pet.project.hlib2filestorage.model.dto.folder.*;
 import pet.project.hlib2filestorage.service.FolderService;
 
 @Controller
@@ -59,6 +56,13 @@ public class FolderController {
     @GetMapping("/delete")
     public String deleteFolder(FolderRequestDto folderRequestDto){
         folderService.deleteFolder(folderRequestDto);
+
+        return "redirect:/home";
+    }
+
+    @GetMapping("/rename")
+    public String renameFolder(FolderRenameRequestDto dto){
+        folderService.renameFolder(dto);
 
         return "redirect:/home";
     }

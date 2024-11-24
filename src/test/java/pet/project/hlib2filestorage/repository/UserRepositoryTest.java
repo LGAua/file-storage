@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
 
-    //todo Добавить в класпасс H2 дб и тогда должно заработать (сейчас пытается сохранять в основную бд т.к. Replace.NONE)
+    //todo Добавить тест контейнер.
 
     @Autowired
     private UserRepository userRepository;
