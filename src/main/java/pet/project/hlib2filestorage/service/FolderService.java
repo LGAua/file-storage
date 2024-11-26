@@ -2,6 +2,8 @@ package pet.project.hlib2filestorage.service;
 
 import io.minio.*;
 import io.minio.errors.*;
+import io.minio.messages.DeleteError;
+import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,16 +12,12 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pet.project.hlib2filestorage.exception.FileOperationException;
 import pet.project.hlib2filestorage.exception.FolderOperationException;
-import pet.project.hlib2filestorage.model.dto.file.FileRequestDto;
 import pet.project.hlib2filestorage.model.dto.file.FileResponseDto;
 import pet.project.hlib2filestorage.model.dto.folder.*;
 import pet.project.hlib2filestorage.repository.UserRepository;
 
 import java.io.*;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Service
@@ -62,21 +60,20 @@ public class FolderService {
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(defaultBucketName)
-                            .object(createEmptyFolderPath(dto))
+                            .object(createAbsolutePath(dto))
                             .stream(new ByteArrayInputStream("Folder placeholder".getBytes()), "Folder placeholder".length(), -1)
                             .build()
             );
         } catch (Exception e) {
             throw new FolderOperationException("Can not create folder");
         }
-
     }
 
-    public FolderContentDto getFolderContent(FolderRequestDto folderRequestDto) {
-        List<FileResponseDto> files = fileService.getFilesInsideFolder(folderRequestDto);
-        List<FolderResponseDto> folders = getFoldersInsideFolder(folderRequestDto);
+    public FolderContentDto getFolderContent(FolderRequestDto dto) {
+        List<FileResponseDto> files = fileService.getFilesInsideFolder(dto);
+        List<FolderResponseDto> folders = getFoldersInsideFolder(dto);
 
-        String folderPath = createAbsolutePath(folderRequestDto); //не правильно, просто dto.getFolderPath()
+        String folderPath = createAbsolutePath(dto);
 
         return new FolderContentDto(
                 folderPath,
@@ -84,6 +81,94 @@ public class FolderService {
                 folders,
                 files
         );
+    }
+
+    public void deleteFolder(FolderRequestDto folderRequestDto) {
+        deleteObjectsInFolder(folderRequestDto);
+        try {
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(defaultBucketName)
+                            .object(folderRequestDto.getFolderPath())
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new FolderOperationException("Can not delete folder");
+        }
+    }
+
+    public void deleteObjectsInFolder(FolderRequestDto folderRequestDto) {
+        List<DeleteObject> deleteObjectList = new ArrayList<>();
+        FolderContentDto folderContent = getFolderContent(folderRequestDto);
+
+        //todo common parent
+        for (FolderResponseDto folder : folderContent.getFolders()) {
+            deleteObjectList.add(new DeleteObject(folder.getFolderPath()));
+        }
+
+        for (FileResponseDto file : folderContent.getFiles()) {
+            deleteObjectList.add(new DeleteObject(file.getFilePath()));
+        }
+
+        Iterable<Result<DeleteError>> results = minioClient.removeObjects(
+                RemoveObjectsArgs.builder()
+                        .bucket(defaultBucketName)
+                        .objects(deleteObjectList)
+                        .build());
+
+        results.forEach(result -> {
+            try {
+                result.get();
+            } catch (Exception e) {
+                throw new FolderOperationException("Can not delete objects in folder");
+            }
+        });
+    }
+
+    public void copyFolderToFolder(FolderResponseDto dto, String folderPath) {
+        try {
+            minioClient.copyObject(
+                    CopyObjectArgs.builder()
+                            .bucket(defaultBucketName)
+                            .object(folderPath + dto.getFolderName())
+                            .source(
+                                    CopySource.builder()
+                                            .bucket(defaultBucketName)
+                                            .object(dto.getFolderPath())
+                                            .build()
+                            )
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new FolderOperationException("Can not rename folder");
+        }
+    }
+
+    public void renameFolder(FolderRenameRequestDto dto) {
+        FolderContentDto folderContent = getFolderContent(dto);
+        List<FolderResponseDto> folders = folderContent.getFolders();
+        List<FileResponseDto> files = folderContent.getFiles();
+
+        String path = createNewPath(dto);
+
+        FolderRequestDto folderRequestDto = new FolderRequestDto(dto.getFolderNewName(), dto.getFolderPath(), dto.getUsername());
+        createFolder(folderRequestDto);
+
+        // todo Create common inheritor MinioObjectDto
+        for (FolderResponseDto folder : folders) {
+            copyFolderToFolder(folder, path);
+        }
+
+        for (FileResponseDto file : files) {
+            fileService.copyFileToFolder(file, path);
+        }
+
+        deleteFolder(dto);
+    }
+
+    private String createNewPath(FolderRenameRequestDto dto) {
+        String pathToFolder = dto.getFolderPath().substring(0, (dto.getFolderPath().length() - dto.getFolderName().length()) - 1);
+        return pathToFolder + dto.getFolderNewName() + "/";
     }
 
     private List<FolderResponseDto> getFoldersInsideFolder(FolderRequestDto dto) {
@@ -102,7 +187,7 @@ public class FolderService {
                 String objectPath = object.get().objectName();
                 if (object.get().isDir()) {
                     String folderName = objectPath.substring(path.length(), objectPath.lastIndexOf("/"));
-                    folderList.add(new FolderResponseDto(path, folderName));
+                    folderList.add(new FolderResponseDto(objectPath, folderName));
                 }
             } catch (Exception e) {
                 log.error("Can not retrieve folder list");
@@ -129,74 +214,11 @@ public class FolderService {
 
     private String createAbsolutePath(FolderRequestDto dto) {
         Long id = getIdByUsername(dto.getUsername());
-        String path = dto.getFolderPath() == null ? rootFolderName : (dto.getFolderPath() + dto.getFolderName() + "/");
+        String path = dto.getFolderPath() == null ? rootFolderName : dto.getFolderPath();
         return path.formatted(id);
-    }
-
-    private String createEmptyFolderPath(FolderRequestDto dto) {
-        return createAbsolutePath(dto) + dto.getFolderName() + "/";
     }
 
     private Long getIdByUsername(String username) {
         return userRepository.findByUsername(username).getId();
-    }
-
-    public void deleteFolder(FolderRequestDto fileRequestDto) {
-        try {
-            minioClient.removeObject(
-                    RemoveObjectArgs.builder()
-                            .bucket(defaultBucketName)
-                            .object(fileRequestDto.getFolderPath())
-                            .build());
-        } catch (Exception e) {
-            throw new FileOperationException("Can not delete folder");
-        }
-    }
-
-    public void copyFolderToFolder(FolderResponseDto dto, String folderPath) {
-        GetObjectArgs getObjectArgs = GetObjectArgs.builder()
-                .bucket(defaultBucketName)
-                .object(dto.getFolderPath() + dto.getFolderName())
-                .build();
-        try (GetObjectResponse object = minioClient.getObject(getObjectArgs)) {
-            minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(defaultBucketName)
-                    .object(folderPath + dto.getFolderName())
-                    .stream(object, object.readAllBytes().length, 1)
-                    .build());
-
-        } catch (Exception e) {
-            throw new FolderOperationException("Can not rename folder");
-        }
-    }
-
-    public void renameFolder(FolderRenameRequestDto dto) {
-        FolderContentDto folderContent = getFolderContent(dto);
-        List<FolderResponseDto> folders = folderContent.getFolders();
-        List<FileResponseDto> files = folderContent.getFiles();
-
-        String path = dto.getFolderPath() + dto.getFolderNewName();
-
-        // Не создает
-        createFolder(dto);
-        // Maybe change to SnowBallObjects (need to check with timer)
-        for (FileResponseDto file : files) {
-            fileService.copyFileToFolder(file, path);
-        }
-
-        for (FolderResponseDto folder : folders) {
-            copyFolderToFolder(folder, path);
-        }
-
-        //не удаляет
-        try {
-            minioClient.removeObject(
-                    RemoveObjectArgs.builder()
-                            .bucket(defaultBucketName)
-                            .object(createAbsolutePath(dto))
-                            .build());
-        } catch (Exception e) {
-            throw new FolderOperationException("Can not rename folder");
-        }
     }
 }

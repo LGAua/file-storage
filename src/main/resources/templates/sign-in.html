@@ -5,12 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/sign-in" method="post" th:object="${user}">
+<form action="/sign-in" method="post" >
     <label for="login">Enter your Email
-        <input type="text" class="form-control" id="login" th:field="*{username}" name="username" placeholder="Enter your email" required>
+        <input type="text" class="form-control" id="login" name="username" placeholder="Enter your email" required>
     </label><br>
     <label for="password">Enter your Password
-        <input type="password" class="form-control" id="password" th:field="*{password}" name="password" placeholder="Enter your password"
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
                required><br>
 
         <button type="submit" class="btn btn-primary btn-block">Log into account</button>

@@ -33,12 +33,14 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/sign-in","sign-up").permitAll()
+                        .requestMatchers("/sign-in", "sign-up").permitAll()
                         .anyRequest().hasRole("USER")
                 ).formLogin(login -> login
                         .loginPage("/sign-in")
                         .failureUrl("/sign-in/not-found")
-                        .defaultSuccessUrl("/home")
+                        .defaultSuccessUrl("/")
+                ).logout(logout -> logout
+                        .logoutSuccessUrl("/sign-in")
                 ).requestCache((cache) -> cache
                         .requestCache(requestCache)
                 ).exceptionHandling(ex -> ex

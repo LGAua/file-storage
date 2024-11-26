@@ -20,50 +20,74 @@ public class FolderController {
     private final FolderService folderService;
 
     @GetMapping
-    public String getFile(FolderRequestDto folderRequestDto,
-                          RedirectAttributes redirectAttributes) {
+    public String getFolder(FolderRequestDto folderRequestDto,
+                            RedirectAttributes redirectAttributes) {
         FolderContentDto folderContentDto = folderService.getFolderContent(folderRequestDto);
         redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
-        return "redirect:/home";
+        return "redirect:/";
     }
 
+    //todo i can upload folder but when delete the last file inside the folder is disappearing
     @PostMapping
     public String uploadFolder(@Valid @ModelAttribute("folderUploadDto") FolderUploadDto folderUploadDto,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("objectErrors", bindingResult.getFieldErrors());
-            return "redirect:/home";
+            return "redirect:/";
         }
         folderService.uploadFolder(folderUploadDto);
         redirectAttributes.addFlashAttribute("uploadFolderSuccess", "Operation successful");
-        return "redirect:/home";
+        return "redirect:/";
     }
 
+    //todo Can not create folder probleb with getFolderLocation(folderRequestDto)
     @PostMapping("/new-folder")
-    public String createFile(@Valid @ModelAttribute("fileCreateDto") FolderRequestDto fileRequestDto,
+    public String createFile(@Valid FolderRequestDto folderRequestDto,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("fileErrors", bindingResult.getFieldErrors());
-            return "redirect:/home";
+            return "redirect:/";
         }
-        folderService.createFolder(fileRequestDto);
+        folderService.createFolder(folderRequestDto);
 
-        return "redirect:/home";
+        folderRequestDto.setFolderPath(getFolderLocation(folderRequestDto));
+
+        FolderContentDto folderContentDto = folderService.getFolderContent(folderRequestDto);
+        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
+        return "redirect:/";
     }
 
+     // todo NOT WORKING for folder
     @GetMapping("/delete")
-    public String deleteFolder(FolderRequestDto folderRequestDto){
+    public String deleteFolder(FolderRequestDto folderRequestDto,
+                               RedirectAttributes redirectAttributes) {
         folderService.deleteFolder(folderRequestDto);
 
-        return "redirect:/home";
+        String path = getFolderLocation(folderRequestDto);
+        folderRequestDto.setFolderPath(path);
+        folderRequestDto.setUsername(folderRequestDto.getUsername());
+
+        FolderContentDto folderContentDto = folderService.getFolderContent(folderRequestDto);
+        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
+        return "redirect:/";
     }
 
     @GetMapping("/rename")
-    public String renameFolder(FolderRenameRequestDto dto){
+    public String renameFolder(FolderRenameRequestDto dto,
+                               RedirectAttributes redirectAttributes) {
         folderService.renameFolder(dto);
 
-        return "redirect:/home";
+        FolderContentDto folderContentDto = folderService.getFolderContent(dto);
+        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
+        return "redirect:/";
+    }
+
+    private String getFolderLocation(FolderRequestDto dto) {
+        String folderPath = dto.getFolderPath();
+        String folderName = dto.getFolderName();
+
+        return folderPath.substring(0, folderPath.indexOf(folderName));
     }
 }

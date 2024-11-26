@@ -4,17 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pet.project.hlib2filestorage.model.dto.MinioObjectDto;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileRequestDto extends MinioObjectDto {
+public class FileDownloadDto {
 
-    private String fileName;
+    private byte[] file;
 
-    private String filePath;
+    private String contentType;
 
-    private String username;
+    private Long contentLength;
 }
