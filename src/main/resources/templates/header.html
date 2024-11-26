@@ -1,0 +1,11 @@
+<header>
+    <div th:if="${#authentication.name} != null">
+        <span th:text="${#authentication.name}">User</span>
+        <span><a href="/logout">Logout</a></span>
+    </div>
+
+    <div th:if="${#authentication.name} == null">
+        <span><a href="/sign-in">Login</a></span>
+        <span><a href="/sign-up">Register</a></span>
+    </div>
+</header>
