@@ -23,7 +23,7 @@ public class HomeController {
 
     private final FolderService folderService;
     private final FileService fileService;
-
+    //todo вынести в HTML форму rename folder/file в отдельные компоненты и подставлять через th:if="${object.isDir} == true"
     @GetMapping
     public String homePage(@AuthenticationPrincipal() User user,
                            @RequestParam(required = false) String path,

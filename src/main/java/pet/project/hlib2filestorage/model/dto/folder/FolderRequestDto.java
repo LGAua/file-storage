@@ -12,9 +12,6 @@ import lombok.Setter;
 public class FolderRequestDto {
 
     private String folderName;
-
     private String folderPath;
-
     private String username;
-
 }

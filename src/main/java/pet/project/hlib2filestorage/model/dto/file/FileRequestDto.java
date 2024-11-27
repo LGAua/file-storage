@@ -13,8 +13,6 @@ import pet.project.hlib2filestorage.model.dto.MinioObjectDto;
 public class FileRequestDto extends MinioObjectDto {
 
     private String fileName;
-
     private String filePath;
-
     private String username;
 }

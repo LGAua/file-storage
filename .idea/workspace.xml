@@ -4,22 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0d9f3cdd-fe59-4ba3-8e94-07f9e6b6126b" name="Changes" comment="Add deleteFolder and renameFolder">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/file/FileDownloadDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/search.html" afterDir="false" />
+    <list default="true" id="0d9f3cdd-fe59-4ba3-8e94-07f9e6b6126b" name="Changes" comment="Additional HTML components">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/config/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/UserDetailsServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/HomeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/MinioObjectDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/MinioObjectDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/file/FileDownloadDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/file/FileDownloadDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/file/FileRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/file/FileRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/file/FileResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/file/FileResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderContentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderContentDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderRenameRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderRenameRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderRequestDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/model/dto/folder/FolderResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/sign-in.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/sign-in.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +46,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -87,6 +92,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -247,7 +253,7 @@
       <option name="presentableId" value="Default" />
       <updated>1730977175967</updated>
       <workItem from="1730977177127" duration="44200000" />
-      <workItem from="1731570885927" duration="129770000" />
+      <workItem from="1731570885927" duration="144116000" />
     </task>
     <task id="LOCAL-00001" summary="Create models">
       <option name="closed" value="true" />
@@ -313,7 +319,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732431721516</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Fix bugs">
+      <option name="closed" value="true" />
+      <created>1732616172406</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1732616172406</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Additional HTML components">
+      <option name="closed" value="true" />
+      <created>1732616203793</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1732616203793</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -339,7 +361,9 @@
     <MESSAGE value="Add File and Folder controllers and additional logic to respective services" />
     <MESSAGE value="Change home controller" />
     <MESSAGE value="Add deleteFolder and renameFolder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add deleteFolder and renameFolder" />
+    <MESSAGE value="Fix bugs" />
+    <MESSAGE value="Additional HTML components" />
+    <option name="LAST_COMMIT_MESSAGE" value="Additional HTML components" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -411,38 +435,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
-          <line>48</line>
+          <line>47</line>
           <option name="timeStamp" value="128" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
-          <line>50</line>
+          <line>49</line>
           <option name="timeStamp" value="129" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="130" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
-          <line>79</line>
+          <line>83</line>
           <option name="timeStamp" value="142" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
           <line>24</line>
           <option name="timeStamp" value="167" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FileService.java</url>
-          <line>117</line>
-          <option name="timeStamp" value="179" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FileService.java</url>
-          <line>110</line>
-          <option name="timeStamp" value="181" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/HomeController.java</url>
@@ -466,17 +475,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FileService.java</url>
-          <line>170</line>
+          <line>159</line>
           <option name="timeStamp" value="215" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FileService.java</url>
-          <line>163</line>
+          <line>152</line>
           <option name="timeStamp" value="217" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
-          <line>73</line>
+          <line>76</line>
           <option name="timeStamp" value="221" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -496,7 +505,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
-          <line>58</line>
+          <line>61</line>
           <option name="timeStamp" value="225" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -524,15 +533,83 @@
           <line>73</line>
           <option name="timeStamp" value="238" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>161</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>162</line>
+          <option name="timeStamp" value="252" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>124</line>
+          <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>146</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>147</line>
+          <option name="timeStamp" value="255" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="256" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="265" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="266" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="267" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="268" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/controller/FolderController.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="269" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>131</line>
+          <option name="timeStamp" value="270" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>179</line>
+          <option name="timeStamp" value="276" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/hlib2filestorage/service/FolderService.java</url>
+          <line>153</line>
+          <option name="timeStamp" value="277" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
-        <watch expression="objectName + &quot;/&quot;" />
-        <watch expression="objectPath.indexOf(objectName)" />
-        <watch expression="objectPath.substring(0,objectPath.indexOf(objectName) + objectName.length())" language="JAVA" />
-        <watch expression="fileDownloadDto.getContentLength()" />
-        <watch expression="fileDownloadDto.getFile()" />
+        <watch expression="objectDto.getObjectPath()" language="JAVA" />
+        <watch expression="object.getObjectPath()" language="JAVA" />
+        <watch expression="createNewPath(dto)" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

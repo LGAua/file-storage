@@ -12,5 +12,4 @@ import lombok.Setter;
 public class FolderRenameRequestDto extends FolderRequestDto{
 
     private String folderNewName;
-
 }

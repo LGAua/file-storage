@@ -51,7 +51,7 @@ public class FileController {
             redirectAttributes.addFlashAttribute("objectErrors", bindingResult.getFieldErrors());
             return "redirect:/";
         }
-        fileService.saveObject(objectDto);
+        fileService.uploadFile(objectDto);
         redirectAttributes.addFlashAttribute("uploadFileSuccess", "Operation successful");
         return "redirect:/";
     }

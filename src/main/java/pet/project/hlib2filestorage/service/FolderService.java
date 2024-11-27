@@ -1,7 +1,6 @@
 package pet.project.hlib2filestorage.service;
 
 import io.minio.*;
-import io.minio.errors.*;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
@@ -13,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pet.project.hlib2filestorage.exception.FolderOperationException;
+import pet.project.hlib2filestorage.model.dto.MinioObjectDto;
 import pet.project.hlib2filestorage.model.dto.file.FileResponseDto;
 import pet.project.hlib2filestorage.model.dto.folder.*;
 import pet.project.hlib2filestorage.repository.UserRepository;
@@ -70,16 +70,17 @@ public class FolderService {
     }
 
     public FolderContentDto getFolderContent(FolderRequestDto dto) {
-        List<FileResponseDto> files = fileService.getFilesInsideFolder(dto);
-        List<FolderResponseDto> folders = getFoldersInsideFolder(dto);
+        List<MinioObjectDto> objects = new ArrayList<>();
+
+        objects.addAll(getFoldersInsideFolder(dto));
+        objects.addAll(fileService.getFilesInsideFolder(dto));
 
         String folderPath = createAbsolutePath(dto);
 
         return new FolderContentDto(
                 folderPath,
                 createBreadCrumbs(folderPath),
-                folders,
-                files
+                objects
         );
     }
 
@@ -101,13 +102,8 @@ public class FolderService {
         List<DeleteObject> deleteObjectList = new ArrayList<>();
         FolderContentDto folderContent = getFolderContent(folderRequestDto);
 
-        //todo common parent
-        for (FolderResponseDto folder : folderContent.getFolders()) {
-            deleteObjectList.add(new DeleteObject(folder.getFolderPath()));
-        }
-
-        for (FileResponseDto file : folderContent.getFiles()) {
-            deleteObjectList.add(new DeleteObject(file.getFilePath()));
+        for (MinioObjectDto object : folderContent.getObjects()) {
+            deleteObjectList.add(new DeleteObject(object.getObjectPath()));
         }
 
         Iterable<Result<DeleteError>> results = minioClient.removeObjects(
@@ -125,18 +121,26 @@ public class FolderService {
         });
     }
 
-    public void copyFolderToFolder(FolderResponseDto dto, String folderPath) {
+    public void copyFolderToFolder(FolderResponseDto dto, String folderPath, String username) {
+        String oldPath = dto.getObjectPath();
+        String newPath = folderPath + dto.getObjectName() + "/";
+
+        //todo fix it создать пустые папки без текстового файла и првоерить переименовать Empty FOlder
+        // если успешно переименуется значит проблема в том что в папке которую хотим переименовать лежат папки с папками/файлами
+        // а пустые папки переименовуются без проблем
+        // сделать рекурсивный вызов метода copyFolderToFolder в методе copyFolderToFolder куда будем передовать пути вложенах папок
+//        FolderRequestDto folderRequestDto = new FolderRequestDto(dto.getObjectName(), newPath, username);
+//        createFolder(folderRequestDto);
         try {
             minioClient.copyObject(
                     CopyObjectArgs.builder()
                             .bucket(defaultBucketName)
-                            .object(folderPath + dto.getFolderName())
+                            .object(newPath)
                             .source(
                                     CopySource.builder()
                                             .bucket(defaultBucketName)
-                                            .object(dto.getFolderPath())
-                                            .build()
-                            )
+                                            .object(oldPath)
+                                            .build())
                             .build()
             );
         } catch (Exception e) {
@@ -145,34 +149,37 @@ public class FolderService {
     }
 
     public void renameFolder(FolderRenameRequestDto dto) {
-        FolderContentDto folderContent = getFolderContent(dto);
-        List<FolderResponseDto> folders = folderContent.getFolders();
-        List<FileResponseDto> files = folderContent.getFiles();
+        List<MinioObjectDto> allObjectsWithGivenRoot = getAllObjectsWithGivenRoot(dto);
 
-        String path = createNewPath(dto);
-
-        FolderRequestDto folderRequestDto = new FolderRequestDto(dto.getFolderNewName(), dto.getFolderPath(), dto.getUsername());
-        createFolder(folderRequestDto);
-
-        // todo Create common inheritor MinioObjectDto
-        for (FolderResponseDto folder : folders) {
-            copyFolderToFolder(folder, path);
-        }
-
-        for (FileResponseDto file : files) {
-            fileService.copyFileToFolder(file, path);
+        for (MinioObjectDto object : allObjectsWithGivenRoot) {
+            String path = createNewPath(dto, object.getObjectPath());
+            if (object.isDir()) {
+                createFolder(new FolderRequestDto(object.getObjectName(), path, dto.getUsername()));
+            } else {
+                fileService.copyFileToFolder((FileResponseDto) object, path);
+            }
         }
 
         deleteFolder(dto);
     }
 
-    private String createNewPath(FolderRenameRequestDto dto) {
-        String pathToFolder = dto.getFolderPath().substring(0, (dto.getFolderPath().length() - dto.getFolderName().length()) - 1);
-        return pathToFolder + dto.getFolderNewName() + "/";
+    private List<MinioObjectDto> getAllObjectsWithGivenRoot(FolderRequestDto dto) {
+        List<MinioObjectDto> allObjectsInsideFolder = new ArrayList<>();
+        List<MinioObjectDto> folderContent = getFolderContent(dto).getObjects();
+        for (MinioObjectDto objectDto : folderContent) {
+            if (objectDto.isDir()) {
+                FolderRequestDto folderRequestDto = new FolderRequestDto(objectDto.getObjectName(), objectDto.getObjectPath(), dto.getUsername());
+                if (!getFolderContent(folderRequestDto).getObjects().isEmpty()) {
+                    allObjectsInsideFolder.addAll(getAllObjectsWithGivenRoot(folderRequestDto));
+                }
+            }
+            allObjectsInsideFolder.add(objectDto);
+        }
+        return allObjectsInsideFolder;
     }
 
-    private List<FolderResponseDto> getFoldersInsideFolder(FolderRequestDto dto) {
-        List<FolderResponseDto> folderList = new ArrayList<>();
+    private List<MinioObjectDto> getFoldersInsideFolder(FolderRequestDto dto) {
+        List<MinioObjectDto> folderList = new ArrayList<>();
         String path = createAbsolutePath(dto);
 
         Iterable<Result<Item>> objectsInsideFolder = minioClient.listObjects(
@@ -187,7 +194,7 @@ public class FolderService {
                 String objectPath = object.get().objectName();
                 if (object.get().isDir()) {
                     String folderName = objectPath.substring(path.length(), objectPath.lastIndexOf("/"));
-                    folderList.add(new FolderResponseDto(objectPath, folderName));
+                    folderList.add(new FolderResponseDto(folderName, objectPath, true));
                 }
             } catch (Exception e) {
                 log.error("Can not retrieve folder list");
@@ -195,6 +202,12 @@ public class FolderService {
             }
         }
         return folderList;
+    }
+
+    private String createNewPath(FolderRenameRequestDto dto, String objectPath) {
+        String pathToFolder = dto.getFolderPath().substring(0, (dto.getFolderPath().length() - dto.getFolderName().length()) - 1);
+        String newPAth = pathToFolder + dto.getFolderNewName() + "/";
+        return objectPath.replace(dto.getFolderPath(), newPAth);
     }
 
     private Map<String, String> createBreadCrumbs(String folderPath) {

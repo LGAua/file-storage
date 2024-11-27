@@ -10,8 +10,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MinioObjectDto {
-    private String objectName;
-    private String objectPath;
+    protected String objectName;
+    protected String objectPath;
+    private boolean isDir;
+
+    public MinioObjectDto(String objectName, String objectPath) {
+        this.objectName = objectName;
+        this.objectPath = objectPath;
+    }
 
     @Override
     public int hashCode() {

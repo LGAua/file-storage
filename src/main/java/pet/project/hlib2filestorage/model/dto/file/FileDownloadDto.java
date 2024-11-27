@@ -12,8 +12,6 @@ import lombok.Setter;
 public class FileDownloadDto {
 
     private byte[] file;
-
     private String contentType;
-
     private Long contentLength;
 }

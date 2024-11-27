@@ -36,7 +36,7 @@ public class FileService {
     @Value("${minio.folder.name.template}")
     private String rootFolderName;
 
-    public void saveObject(FileUploadDto fileUploadDto) {
+    public void uploadFile(FileUploadDto fileUploadDto) {
         MultipartFile file = fileUploadDto.getFile();
         String path = createAbsolutePath(fileUploadDto.getUsername(), null); //remove null
         try {
@@ -74,8 +74,8 @@ public class FileService {
         }
     }
 
-    public List<FileResponseDto> getFilesInsideFolder(FolderRequestDto dto) {
-        List<FileResponseDto> fileList = new ArrayList<>();
+    public List<MinioObjectDto> getFilesInsideFolder(FolderRequestDto dto) {
+        List<MinioObjectDto> fileList = new ArrayList<>();
         String path = createAbsolutePath(dto.getUsername(), dto.getFolderPath());
 
         Iterable<Result<Item>> objectsInsideFolder = minioClient.listObjects(
@@ -91,7 +91,7 @@ public class FileService {
                 if (!object.get().isDir()) {
                     String fileName = objectPath.substring(objectPath.lastIndexOf("/") + 1);
                     if (!fileName.isBlank()) {
-                        fileList.add(new FileResponseDto(objectPath, fileName));
+                        fileList.add(new FileResponseDto(fileName, objectPath));
                     }
                 }
             } catch (Exception e) {
@@ -103,16 +103,16 @@ public class FileService {
 
     }
 
-    public void copyFileToFolder(FileResponseDto dto, String folderPath) {
+    public void copyFileToFolder(FileResponseDto dto, String filePath) {
         try {
             minioClient.copyObject(
                     CopyObjectArgs.builder()
                             .bucket(defaultBucketName)
-                            .object(folderPath + dto.getFileName())
+                            .object(filePath)
                             .source(
                                     CopySource.builder()
                                             .bucket(defaultBucketName)
-                                            .object(dto.getFilePath())
+                                            .object(dto.getObjectPath())
                                             .build()
                             )
                             .build()
@@ -135,16 +135,6 @@ public class FileService {
         }
     }
 
-    private String createAbsolutePath(String username, String folderPath) {
-        Long id = getIdByUsername(username);
-        String path = folderPath == null ? rootFolderName : folderPath;
-        return path.formatted(id);
-    }
-
-    private Long getIdByUsername(String username) {
-        return userRepository.findByUsername(username).getId();
-    }
-
     public Set<MinioObjectDto> findObjectsByName(FileRequestDto dto) {
         Set<MinioObjectDto> objectList = new HashSet<>();
         String objectName = dto.getObjectName();
@@ -159,7 +149,6 @@ public class FileService {
             try {
                 String objectPath = result.get().objectName();
                 if (objectPath.contains(objectName)) {
-//                    int endIndex = objectPath.indexOf(objectName) + objectName.length();
                     String path = objectPath.substring(0, objectPath.indexOf(objectName));
                     objectList.add(new MinioObjectDto(objectName, path));
                 }
@@ -169,5 +158,15 @@ public class FileService {
         });
 
         return objectList;
+    }
+
+    private String createAbsolutePath(String username, String folderPath) {
+        Long id = getIdByUsername(username);
+        String path = folderPath == null ? rootFolderName : folderPath;
+        return path.formatted(id);
+    }
+
+    private Long getIdByUsername(String username) {
+        return userRepository.findByUsername(username).getId();
     }
 }

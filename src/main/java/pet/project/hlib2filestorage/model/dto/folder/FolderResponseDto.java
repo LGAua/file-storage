@@ -11,10 +11,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class FolderResponseDto extends MinioObjectDto {
 
-    private String folderPath;
-
-    private String folderName;
+    public FolderResponseDto(String folderName, String folderPath, boolean isDir) {
+        super(folderName, folderPath, isDir);
+    }
 }

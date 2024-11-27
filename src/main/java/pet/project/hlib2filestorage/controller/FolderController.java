@@ -41,7 +41,6 @@ public class FolderController {
         return "redirect:/";
     }
 
-    //todo Can not create folder probleb with getFolderLocation(folderRequestDto)
     @PostMapping("/new-folder")
     public String createFile(@Valid FolderRequestDto folderRequestDto,
                              BindingResult bindingResult,
@@ -50,6 +49,10 @@ public class FolderController {
             redirectAttributes.addFlashAttribute("fileErrors", bindingResult.getFieldErrors());
             return "redirect:/";
         }
+        String folderPath = folderRequestDto.getFolderPath();
+        String folderName = folderRequestDto.getFolderName();
+        folderRequestDto.setFolderPath(folderPath + folderName + "/");
+
         folderService.createFolder(folderRequestDto);
 
         folderRequestDto.setFolderPath(getFolderLocation(folderRequestDto));
@@ -59,7 +62,7 @@ public class FolderController {
         return "redirect:/";
     }
 
-     // todo NOT WORKING for folder
+    // todo NOT WORKING for folder
     @GetMapping("/delete")
     public String deleteFolder(FolderRequestDto folderRequestDto,
                                RedirectAttributes redirectAttributes) {
@@ -77,13 +80,17 @@ public class FolderController {
     @GetMapping("/rename")
     public String renameFolder(FolderRenameRequestDto dto,
                                RedirectAttributes redirectAttributes) {
+
         folderService.renameFolder(dto);
+
+        dto.setFolderPath(getFolderLocation(dto));
 
         FolderContentDto folderContentDto = folderService.getFolderContent(dto);
         redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
         return "redirect:/";
     }
 
+    //todo return FolderRequestDto
     private String getFolderLocation(FolderRequestDto dto) {
         String folderPath = dto.getFolderPath();
         String folderName = dto.getFolderName();
