@@ -12,8 +12,8 @@
 <div class="container">
     <h1>File Storage</h1>
 
-    <div th:replace="~{header}"></div>
-    <div th:replace="~{search-field}"></div>
+    <div th:replace="~{components/header}"></div>
+    <div th:replace="~{components/search-field}"></div>
 
     <!-- Folder List Section -->
     <section class="section">
@@ -37,66 +37,15 @@
             </form>
 
 
-            <!-- Folders -->
+            <!-- Folders & Files cards -->
             <div class="folders" th:each="object : ${folderContentDto.objects}">
-
-<!--                <div th:if="${object.isDir} == true" th:replace="~{folder-card}"></div>-->
-<!--                <div th:if="${object.isDir} == false" th:replace="~{file-card}"></div>-->
-
-                <div class="folder">
-                    <form method="get" th:action="@{/}" class="form-inline">
-                        <div th:text="${object.objectName}" class="folder-name"></div>
-                        <a th:if="${object.isDir} == false"
-                           th:href="${'/file/delete?fileName=' + object.objectName + '&filePath=' + object.objectPath + '&username=' + #authentication.name}">Delete</a>
-                        <a th:if="${object.isDir} == true"
-                           th:href="${'/folder/delete?folderName=' + object.objectName + '&folderPath=' + object.objectPath + '&username=' + #authentication.name}">Delete</a>
-                        <input name="path" th:value="${object.objectPath}" type="hidden">
-                        <button type="submit" class="btn-small">Get Files</button>
-                    </form>
-                    <form th:if="${object.isDir} == true" method="get" th:action="@{/folder/rename}"
-                          class="form-inline">
-                        <label for="folderNewName"></label>
-                        <input type="text" id="folderNewName" name="folderNewName">
-                        <input name="folderName" th:value="${object.objectName}" type="hidden">
-                        <input name="folderPath" th:value="${object.objectPath}" type="hidden">
-                        <input name="username" th:value="${#authentication.name}" type="hidden">
-                        <button type="submit" class="btn-small">Rename</button>
-                    </form>
+                <div th:if="${object.isDir} == true">
+                    <div th:replace="~{components/folder-card}"></div>
+                </div>
+                <div th:if="${object.isDir} == false">
+                    <div th:replace="~{components/file-card}"></div>
                 </div>
             </div>
-
-            <!--            <div class="folders">-->
-            <!--                <div th:each="folder : ${folderContentDto.folders}" class="folder">-->
-            <!--                    <form method="get" th:action="@{/}" class="form-inline">-->
-            <!--                        <div th:text="${folder.objectName}" class="folder-name"></div>-->
-            <!--                        <a th:href="${'/folder/delete?folderName=' + folder.objectName + '&folderPath=' + folder.objectPath + '&username=' + #authentication.name}">Delete</a>-->
-            <!--                        <input name="path" th:value="${folder.objectPath}" type="hidden">-->
-            <!--                        <button type="submit" class="btn-small">Get Files</button>-->
-            <!--                    </form>-->
-            <!--                    <form method="get" th:action="@{/folder/rename}" class="form-inline">-->
-            <!--                        <label for="folderNewName"></label>-->
-            <!--                        <input type="text" id="folderNewName" name="folderNewName">-->
-            <!--                        <input name="folderName" th:value="${folder.objectName}" type="hidden">-->
-            <!--                        <input name="folderPath" th:value="${folder.objectPath}" type="hidden">-->
-            <!--                        <input name="username" th:value="${#authentication.name}" type="hidden">-->
-            <!--                        <button type="submit" class="btn-small">Rename</button>-->
-            <!--                    </form>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-            <!-- Files -->
-            <!--            <div class="files">-->
-            <!--                <div th:each="file : ${folderContentDto.files}" class="file">-->
-            <!--                    <form method="get" th:action="@{/file}" th:object="${fileRequestDto}" class="form-inline">-->
-            <!--                        <div th:text="${file.objectName}" class="file-name"></div>-->
-            <!--                        <a th:href="${'/file/delete?fileName=' + file.objectName + '&filePath=' + file.objectPath + '&username=' + #authentication.name}">Delete</a>-->
-            <!--                        <input name="fileName" th:value="${file.objectName}" type="hidden">-->
-            <!--                        <input name="filePath" th:value="${file.objectPath}" type="hidden">-->
-            <!--                        <input name="username" th:value="${#authentication.name}" type="hidden">-->
-            <!--                        <button type="submit" class="btn-small">Download</button>-->
-            <!--                    </form>-->
-            <!--                </div>-->
-            <!--            </div>-->
 
             <div th:if="${folderContentDto.objects.isEmpty()}">Folder is empty</div>
         </div>

@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/sign-in" method="post" >
+<form action="/sign-in" method="post">
     <label for="login">Enter your Email
         <input type="text" class="form-control" id="login" name="username" placeholder="Enter your email" required>
     </label><br>
@@ -16,12 +16,8 @@
         <button type="submit" class="btn btn-primary btn-block">Log into account</button>
     </label>
 </form>
-<div th:if="${errors}" th:each="error : ${errors}">
-    <p style="color:red" th:text="${error.getDefaultMessage()}"></p>
-</div>
-<div th:if="${exception}">
-    <p style="color:red" th:text="${exception}"></p>
-</div>
+<div th:if="${param.error} != null" style="color:red" >Invalid username or/and password</div>
+<div th:if="${param.logout} != null" style="color:red" >Logout successfuly</div>
 <span>Dont have account yet? <a href="sign-up">Register</a></span>
 </body>
 </html>

@@ -1,0 +1,20 @@
+<div class="files">
+    <form method="get" th:action="@{/file}" class="form-inline">
+        <div th:text="${object.objectName}" class="folder-name"></div>
+        <a th:if="${object.isDir} == false"
+           th:href="${'/file/delete?fileName=' + object.objectName + '&filePath=' + object.objectPath + '&username=' + #authentication.name}">Delete</a>
+        <input name="fileName" th:value="${object.objectName}" type="hidden">
+        <input name="filePath" th:value="${object.objectPath}" type="hidden">
+        <input name="username" th:value="${#authentication.name}" type="hidden">
+        <button type="submit" class="btn-small">Download</button>
+    </form>
+    <form method="get" th:action="@{/file/rename}"
+          class="form-inline">
+        <label for="folderNewName"></label>
+        <input type="text" id="fileNewName" name="fileNewName">
+        <input name="fileName" th:value="${object.objectName}" type="hidden">
+        <input name="filePath" th:value="${object.objectPath}" type="hidden">
+        <input name="username" th:value="${#authentication.name}" type="hidden">
+        <button type="submit" class="btn-small">Rename</button>
+    </form>
+</div>
