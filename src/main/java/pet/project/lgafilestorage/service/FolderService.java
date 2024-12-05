@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pet.project.lgafilestorage.exception.FolderOperationException;
+import pet.project.lgafilestorage.model.dto.BreadCrumbDto;
 import pet.project.lgafilestorage.model.dto.MinioObjectDto;
 import pet.project.lgafilestorage.model.dto.file.FileResponseDto;
 import pet.project.lgafilestorage.model.dto.folder.*;
@@ -19,10 +20,6 @@ import pet.project.lgafilestorage.repository.UserRepository;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 @Service
 @Slf4j
@@ -41,7 +38,7 @@ public class FolderService {
     private String defaultBucketName;
 
     public void uploadFolder(FolderUploadDto dto) {
-        if (dto.getFolder() == null || dto.getFolder().isEmpty()) {
+        if (dto.getFolder() == null || dto.getFolder().isEmpty()) { //??
             createFolder(dto);
             return;
         }
@@ -58,13 +55,21 @@ public class FolderService {
             }
         } catch (Exception e) {
             log.error("Can not upload folder");
-            System.out.println(e.getMessage());
-            System.out.println(e.getCause());
             throw new FolderOperationException("Can not upload folder");
         }
     }
 
-    public void createFolder(FolderRequestDto dto) {
+    //todo Folder is not created if one of folders already has folderCounter value (the same folder name)
+    // (Occurs after deleting multiple folders and creating them again)
+    public FolderRequestDto createFolder(FolderRequestDto dto) {
+        String folderLocation = getFolderLocation(dto);
+        int folderCounter = getAmountOfDuplicateFolders(dto, folderLocation);
+
+        if (folderCounter != 0) {
+            String folderName = "%s (%s)/".formatted(dto.getFolderName(), folderCounter);
+            dto.setFolderPath(folderLocation + folderName);
+        }
+
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()
@@ -76,6 +81,9 @@ public class FolderService {
         } catch (Exception e) {
             throw new FolderOperationException("Can not create folder");
         }
+
+        dto.setFolderPath(folderLocation);
+        return dto;
     }
 
     public FolderContentDto getFolderContent(FolderRequestDto dto) {
@@ -95,6 +103,7 @@ public class FolderService {
 
     public void deleteFolder(FolderRequestDto folderRequestDto) {
         List<MinioObjectDto> objects = getAllObjectsWithGivenRoot(folderRequestDto);
+
         List<DeleteObject> deleteObjectList = new ArrayList<>();
         deleteObjectList.add(new DeleteObject(folderRequestDto.getFolderPath()));
 
@@ -153,6 +162,20 @@ public class FolderService {
         return allObjectsInsideFolder;
     }
 
+    private int getAmountOfDuplicateFolders(FolderRequestDto dto, String folderLocation) {
+        List<MinioObjectDto> minioObjectList =
+                getFoldersInsideFolder(new FolderRequestDto(dto.getFolderName(), folderLocation, dto.getUsername())).stream()
+                        .filter(minioObject -> minioObject.getObjectName().contains(dto.getFolderName()))
+                        .toList();
+
+        return minioObjectList.size();
+    }
+
+    private String getFolderLocation(FolderRequestDto dto) {
+        String folderPath = dto.getFolderPath();
+        return folderPath.substring(0, folderPath.lastIndexOf(dto.getFolderName() + "/"));
+    }
+
     private List<MinioObjectDto> getFoldersInsideFolder(FolderRequestDto dto) {
         List<MinioObjectDto> folderList = new ArrayList<>();
         String path = createAbsolutePath(dto);
@@ -179,8 +202,8 @@ public class FolderService {
         return folderList;
     }
 
-    private Map<String, String> createBreadCrumbs(String folderPath) {
-        Map<String, String> breadCrumbsAndFolderPath = new LinkedHashMap<>();
+    private List<BreadCrumbDto> createBreadCrumbs(String folderPath) {
+        List<BreadCrumbDto> breadCrumbList = new ArrayList<>();
 
         String[] breadCrumbs = folderPath.split("/");
         int endIndex = 0;
@@ -188,24 +211,10 @@ public class FolderService {
         for (String breadCrumb : breadCrumbs) {
             endIndex += (breadCrumb.length() + 1);
             String path = folderPath.substring(0, endIndex);
-// todo Дело в том что:
-//  (1) или надо использовать здесь не мапу и создлавать папки с одинаковыми названиями,
-//  (2) или создавать новые папки с порядковыми номерами и тогда мапу можно оставит
-            if (breadCrumbsAndFolderPath.containsKey(breadCrumb)) {
-                String finalBreadCrumb = breadCrumb;
 
-                Map<String, String> map = breadCrumbsAndFolderPath.entrySet().stream()
-                        .filter((e) -> e.getKey().contains(finalBreadCrumb))
-                        .collect(toMap(
-                                (k) -> k.getKey(),
-                                (v) -> v.getValue())
-                        );
-                breadCrumb = breadCrumb + map.size();
-            }
-
-            breadCrumbsAndFolderPath.put(breadCrumb, path);
+            breadCrumbList.add(new BreadCrumbDto(breadCrumb, path));
         }
-        return breadCrumbsAndFolderPath;
+        return breadCrumbList;
     }
 
     private String createNewPath(FolderRenameRequestDto dto, String objectPath) {
@@ -216,7 +225,14 @@ public class FolderService {
 
     private String createAbsolutePath(FolderRequestDto dto) {
         Long id = getIdByUsername(dto.getUsername());
-        String path = dto.getFolderPath() == null ? rootFolderName : dto.getFolderPath();
+
+        String path;
+        if (dto.getFolderPath() == null || dto.getFolderPath().isEmpty()) {
+            path = rootFolderName;
+        } else {
+            path = dto.getFolderPath();
+        }
+
         return path.formatted(id);
     }
 

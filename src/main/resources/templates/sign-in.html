@@ -7,7 +7,7 @@
 <body>
 <form action="/sign-in" method="post">
     <label for="login">Enter your Email
-        <input type="text" class="form-control" id="login" name="username" placeholder="Enter your email" required>
+        <input type="email" class="form-control" id="login" name="username" placeholder="Enter your email" autocomplete="email" required>
     </label><br>
     <label for="password">Enter your Password
         <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
@@ -17,7 +17,7 @@
     </label>
 </form>
 <div th:if="${param.error} != null" style="color:red" >Invalid username or/and password</div>
-<div th:if="${param.logout} != null" style="color:red" >Logout successfuly</div>
+<div th:if="${param.logout} != null" style="color:red" >Logout successfully</div>
 <span>Dont have account yet? <a href="sign-up">Register</a></span>
 </body>
 </html>

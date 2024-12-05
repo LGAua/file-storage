@@ -1,84 +1,100 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Storage</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/script.js"></script>
 </head>
 
 <body>
 <div class="container">
-    <h1>File Storage</h1>
 
     <div th:replace="~{components/header}"></div>
-    <div th:replace="~{components/search-field}"></div>
+    <h1>File Storage</h1>
 
-    <!-- Folder List Section -->
-    <section class="section">
+    <div sec:authorize="!isAuthenticated()"> Please <a th:href="@{/sign-in}">login</a> to see your files</div>
 
-        <div th:if="${folderContentDto}" class="folder-content">
-            <div class="breadcrumbs">
+    <div sec:authorize="isAuthenticated()">
+        <div th:replace="~{components/search-field}"></div>
+
+        <!--Section with Folders & Files list -->
+        <section class="section">
+            <div th:if="${folderContentDto}" class="folder-content">
+
+                <!--BreadCrumbs Chain-->
+                <div class="breadcrumbs">
                 <span th:each="breadCrumb : ${folderContentDto.breadCrumbs}">
                        <span> <a
-                               th:href="'/?path=' + ${breadCrumb.value}"
-                               th:text="${breadCrumb.key}" class="breadcrumb"></a> / </span>
+                               th:href="'/?path=' + ${breadCrumb.breadCrumbPath}"
+                               th:text="${breadCrumb.breadCrumbName}" class="breadcrumb"></a> / </span>
                     </span>
-            </div>
-
-            <!--Create Folder-->
-            <form method="post" th:action="@{/folder/new-folder}" th:object="${folderRequestDto}" class="form">
-                <label for="folderName">Enter Folder Name:</label>
-                <input type="text" id="folderName" name="folderName" th:field="*{folderName}" required class="input">
-                <input name="folderPath" th:value="${folderContentDto.folderPath}" type="hidden">
-                <input name="username" th:value="${#authentication.name}" type="hidden">
-                <button type="submit" class="btn">Create Folder</button>
-            </form>
-
-
-            <!-- Folders & Files cards -->
-            <div class="folders" th:each="object : ${folderContentDto.objects}">
-                <div th:if="${object.isDir} == true">
-                    <div th:replace="~{components/folder-card}"></div>
                 </div>
-                <div th:if="${object.isDir} == false">
-                    <div th:replace="~{components/file-card}"></div>
-                </div>
-            </div>
 
-            <div th:if="${folderContentDto.objects.isEmpty()}">Folder is empty</div>
-        </div>
+                <!--Create Empty Folder in current folder-->
+                <form method="post" th:action="@{/folder/new-folder}" th:object="${folderRequestDto}" class="form">
+                    <label for="folderName">Enter Folder Name:</label>
+                    <input type="text" id="folderName" name="folderName" th:field="*{folderName}" required
+                           class="input">
+                    <input name="folderPath" th:value="${folderContentDto.folderPath}" type="hidden">
+                    <input name="username" th:value="${#authentication.name}" type="hidden">
+                    <button type="submit" class="btn">Create Folder</button>
+                </form>
+
+                <!--Download file to current folder-->
+                <form method="post" th:action="@{/file}" enctype="multipart/form-data" class="form">
+                    <label for="folderName">Upload file:</label>
+                    <input name="file" accept="multipart/form-data" class="input" required type="file">
+                    <input name="folderPath" th:value="${folderContentDto.folderPath}" type="hidden">
+                    <input name="username" th:value="${#authentication.name}" type="hidden">
+                    <button type="submit" class="btn">Upload file</button>
+                </form>
+
+                <!--Display Folders & Files cards -->
+                <div class="folders" th:each="object : ${folderContentDto.objects}">
+                    <div th:if="${object.isDir} == true">
+                        <div th:replace="~{components/folder-card}"></div>
+                    </div>
+                    <div th:if="${object.isDir} == false">
+                        <div th:replace="~{components/file-card}"></div>
+                    </div>
+                </div>
+
+                <div th:if="${folderContentDto.objects.isEmpty()}">Folder is empty</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- File Upload Section -->
+    <section class="section" sec:authorize="isAuthenticated()">
+        <h2>File Upload</h2>
+        <form method="post" th:action="@{/file}" th:object="${fileUploadDto}" enctype="multipart/form-data"
+              class="form" id="fileUploadForm">
+            <label for="uploadFilePanel">Upload File:</label>
+            <input type="file" id="uploadFilePanel" name="file" th:field="*{file}" accept="multipart/form-data" required
+                   class="input">
+            <input name="username" th:value="${#authentication.name}" type="hidden">
+            <button type="submit" class="btn">Upload File</button>
+        </form>
+        <p id="uploadStatusPanel"></p>
+        <div th:if="${uploadFileSuccess}" class="success-message" th:text="${uploadFileSuccess}"></div>
+    </section>
+
+    <!-- Folder Upload Section -->
+    <section class="section" sec:authorize="isAuthenticated()">
+        <h2>Folder Upload</h2>
+        <form method="post" th:action="@{/folder}" th:object="${folderUploadDto}" enctype="multipart/form-data"
+              class="form">
+            <label for="folder">Upload Folder:</label>
+            <input type="file" id="folder" name="folder" th:field="*{folder}" webkitdirectory
+                   accept="multipart/form-data" required class="input">
+            <input name="username" th:value="${#authentication.name}" type="hidden">
+            <button type="submit" class="btn">Upload Folder</button>
+        </form>
+        <div th:if="${uploadFolderSuccess}" class="success-message" th:text="${uploadFolderSuccess}"></div>
     </section>
 </div>
-
-<!-- File Upload Section -->
-<section class="section">
-    <h2>File Upload</h2>
-    <form method="post" th:action="@{/file}" th:object="${fileUploadDto}" enctype="multipart/form-data"
-          class="form">
-        <label for="object">Upload File:</label>
-        <input type="file" id="object" name="file" th:field="*{file}" accept="multipart/form-data" required
-               class="input">
-        <input name="username" th:value="${#authentication.name}" type="hidden">
-        <button type="submit" class="btn">Upload File</button>
-    </form>
-    <div th:if="${uploadFileSuccess}" class="success-message" th:text="${uploadFileSuccess}"></div>
-</section>
-
-<!-- Folder Upload Section -->
-<section class="section">
-    <h2>Folder Upload</h2>
-    <form method="post" th:action="@{/folder}" th:object="${folderUploadDto}" enctype="multipart/form-data"
-          class="form">
-        <label for="folder">Upload Folder:</label>
-        <input type="file" id="folder" name="folder" th:field="*{folder}" webkitdirectory
-               accept="multipart/form-data" required class="input">
-        <input name="username" th:value="${#authentication.name}" type="hidden">
-        <button type="submit" class="btn">Upload Folder</button>
-    </form>
-    <div th:if="${uploadFolderSuccess}" class="success-message" th:text="${uploadFolderSuccess}"></div>
-</section>
 </body>
-
 </html>

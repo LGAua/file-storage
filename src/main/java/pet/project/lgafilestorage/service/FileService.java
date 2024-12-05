@@ -5,6 +5,7 @@ import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pet.project.lgafilestorage.exception.FileOperationException;
@@ -35,7 +36,8 @@ public class FileService {
 
     public void uploadFile(FileUploadDto fileUploadDto) {
         MultipartFile file = fileUploadDto.getFile();
-        String path = createAbsolutePath(fileUploadDto.getUsername(), null); //remove null
+        String path = createAbsolutePath(fileUploadDto.getUsername(), fileUploadDto.getFolderPath());
+        fileUploadDto.setFolderPath(path);
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()
@@ -45,8 +47,8 @@ public class FileService {
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .build());
         } catch (Exception e) {
-            log.error("Can not save file in folder: %s".formatted(fileUploadDto.getFolderName()));
-            throw new FileOperationException("Can not save file in folder: %s".formatted(fileUploadDto.getFolderName()));
+            log.error("Can not save file: %s".formatted(fileUploadDto.getFolderPath()));
+            throw new FileOperationException("Can not save file: %s".formatted(fileUploadDto.getFolderPath()));
         }
     }
 
@@ -62,7 +64,7 @@ public class FileService {
             assert contentLength != null;
 
             return new FileDownloadDto(
-                    object.readAllBytes(),
+                    new ByteArrayResource(object.readAllBytes()),
                     contentType,
                     Long.parseLong(contentLength)
             );
@@ -154,29 +156,9 @@ public class FileService {
         deleteFile(dto);
     }
 
-    public Set<MinioObjectDto> findObjectsByName(FileRequestDto dto) {
-        Set<MinioObjectDto> objectList = new HashSet<>();
-        String objectName = dto.getObjectName();
-        Iterable<Result<Item>> results = minioClient.listObjects(
-                ListObjectsArgs.builder()
-                        .bucket(defaultBucketName)
-                        .prefix(createAbsolutePath(dto.getUsername(), null))
-                        .recursive(true)
-                        .build());
-
-        results.forEach(result -> {
-            try {
-                String objectPath = result.get().objectName();
-                if (objectPath.contains(objectName)) {
-                    String path = objectPath.substring(0, objectPath.indexOf(objectName));
-                    objectList.add(new MinioObjectDto(objectName, path));
-                }
-            } catch (Exception e) {
-                throw new FileOperationException("Error during searching object with name " + dto.getObjectName());
-            }
-        });
-
-        return objectList;
+    private String getObjectFullName(String objectPath) {
+        String[] strings = objectPath.split("/");
+        return strings[strings.length - 1];
     }
 
     private String createAbsolutePath(String username, String folderPath) {

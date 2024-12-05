@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -21,4 +22,6 @@ public class UserRegistrationDto {
     @NotBlank
     @Size(min = 5,message = "Password should have at least 5 symbols")
     private String password;
+
+    private MultipartFile file;
 }

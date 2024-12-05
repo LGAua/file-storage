@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.core.io.ByteArrayResource;
 
 @Getter
 @Setter
@@ -11,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FileDownloadDto {
 
-    private byte[] file;
+    private ByteArrayResource file;
     private String contentType;
     private Long contentLength;
 }

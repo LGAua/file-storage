@@ -15,15 +15,15 @@ public class BucketService {
 
     private final MinioClient minioClient;
 
-    public void createBucket(String folderName) {
+    public void createBucket(String bucketName) {
         try {
             minioClient.makeBucket(
                     MakeBucketArgs.builder()
-                            .bucket(folderName.toLowerCase())
+                            .bucket(bucketName.toLowerCase())
                             .build());
         } catch (Exception e) {
             log.error("Can not create folder");
-            throw new FileOperationException("Can not create the folder: " + folderName, e.getCause());
+            throw new FileOperationException("Can not create the bucket: " + bucketName, e.getCause());
         }
     }
 
@@ -35,7 +35,7 @@ public class BucketService {
                             .build());
         } catch (Exception e) {
             log.error("Can not check folder existence");
-            throw new FileOperationException("Can not check folder existence: " + bucketName, e.getCause());
+            throw new FileOperationException("Can not check bucket existence: " + bucketName, e.getCause());
         }
     }
 }

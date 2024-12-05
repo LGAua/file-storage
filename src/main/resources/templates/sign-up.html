@@ -5,7 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/sign-up" method="post" th:object="${user}">
+<form action="/sign-up" method="post" th:object="${user}" enctype="multipart/form-data">
+    <label for="avatar">Upload your avatar picture
+    <input type="file" id="avatar" name="file" accept="multipart/form-data" th:field="*{file}">
+    </label><br>
     <label for="username">Register your Username
         <input type="text" class="form-control" id="username" th:field="*{username}" name="username" placeholder="Enter your username" required>
     </label><br>

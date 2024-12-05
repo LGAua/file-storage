@@ -1,16 +1,18 @@
 package pet.project.lgafilestorage.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pet.project.lgafilestorage.model.dto.folder.*;
 import pet.project.lgafilestorage.service.FolderService;
+
+import java.net.http.HttpRequest;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,10 +22,8 @@ public class FolderController {
     private final FolderService folderService;
 
     @GetMapping
-    public String getFolder(FolderRequestDto folderRequestDto,
-                            RedirectAttributes redirectAttributes) {
-        FolderContentDto folderContentDto = folderService.getFolderContent(folderRequestDto);
-        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
+    public String getFolder() {
+
         return "redirect:/";
     }
 
@@ -38,59 +38,57 @@ public class FolderController {
         folderService.uploadFolder(folderUploadDto);
 
         redirectAttributes.addFlashAttribute("uploadFolderSuccess", "Operation successful");
-        return "redirect:/";
+
+        String folderPath = folderUploadDto.getFolderPath();
+        return "redirect:/?path=" + getRedirectPath(folderPath);
     }
 
+    // todo При создании файла сюда почему то приходит folderPath корневой папки. На клиенте валидный путь, а сюда приходит измененный
     @PostMapping("/new-folder")
-    public String createFile(@Valid FolderRequestDto folderRequestDto,
+    public String createFile(@Valid FolderRequestDto dto,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("fileErrors", bindingResult.getFieldErrors());
             return "redirect:/";
         }
-        String folderPath = folderRequestDto.getFolderPath();
-        String folderName = folderRequestDto.getFolderName();
-        folderRequestDto.setFolderPath(folderPath + folderName + "/");
+        String newPath = dto.getFolderPath() + dto.getFolderName() + "/";
+        FolderRequestDto folderDto = folderService.createFolder(new FolderRequestDto(dto.getFolderName(), newPath, dto.getUsername()));
 
-        folderService.createFolder(folderRequestDto);
-
-        FolderContentDto folderContentDto = folderService.getFolderContent(getFolderLocation(folderRequestDto));
-        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
-        return "redirect:/";
+        String folderPath = folderDto.getFolderPath();
+        return "redirect:/?path=" + getRedirectPath(folderPath);
     }
 
     //todo DeleteMapping with JS
     @GetMapping("/delete")
-    public String deleteFolder(FolderRequestDto folderRequestDto,
-                               RedirectAttributes redirectAttributes) {
+    public String deleteFolder(FolderRequestDto folderRequestDto) {
 
         folderService.deleteFolder(folderRequestDto);
-
-        FolderContentDto folderContentDto = folderService.getFolderContent(getFolderLocation(folderRequestDto));
-        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
-        return "redirect:/";
+        String folderPath = folderRequestDto.getFolderPath();
+        return "redirect:/?path=" + getRedirectPath(folderPath);
     }
 
     // todo При переименовании пустой папки она удаляется
     //todo PutMapping with JS
-    @GetMapping("/rename")
-    public String renameFolder(FolderRenameRequestDto dto,
-                               RedirectAttributes redirectAttributes) {
+    @PutMapping("/rename")
+    public String renameFolder(FolderRenameRequestDto dto, HttpServletRequest request) {
 
+        Map<String, String[]> parameterMap = request.getParameterMap();
         folderService.renameFolder(dto);
-
-        FolderContentDto folderContentDto = folderService.getFolderContent(getFolderLocation(dto));
-        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
-        return "redirect:/";
+        String folderPath = getFolderLocation(dto).getFolderPath();
+        return "redirect:/?path=" + getRedirectPath(folderPath);
     }
 
     private FolderRequestDto getFolderLocation(FolderRequestDto dto) {
         String folderPath = dto.getFolderPath();
         String folderName = dto.getFolderName();
-        String folderLocation = folderPath.substring(0, folderPath.indexOf(folderName));
-
+        String folderLocation = folderPath.replace(folderName + "/", "");
         dto.setFolderPath(folderLocation);
+
         return dto;
+    }
+
+    private String getRedirectPath(String path){
+        return path == null ? "" : path;
     }
 }

@@ -14,8 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class FileUploadDto {
 
-    @NotBlank
-    private String folderName;
+    private String folderPath;
 
     @NotNull(message = "You must specify the file to upload")
     private MultipartFile file;

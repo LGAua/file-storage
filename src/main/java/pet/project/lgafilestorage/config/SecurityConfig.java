@@ -36,8 +36,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/sign-in", "/sign-up").permitAll()
-                        .anyRequest().hasRole("USER")
+                        .requestMatchers("/file", "/folder", "/search").hasRole("USER")
+                        .anyRequest().permitAll()
                 ).formLogin(login -> login
                         .loginPage("/sign-in")
                         .failureUrl("/sign-in?error")

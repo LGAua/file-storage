@@ -28,6 +28,8 @@ public class User {
 
     private String password;
 
+    private String avatarUrl;
+
     //todo role entity in db
     private Set<String> roles;
 }

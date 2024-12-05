@@ -2,6 +2,7 @@ package pet.project.lgafilestorage.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,9 @@ import pet.project.lgafilestorage.service.FolderService;
 public class FileController {
 
     private final FileService fileService;
-    private final FolderService folderService;
 
     @GetMapping
-    public ResponseEntity<byte[]> getFile(FileRequestDto fileRequestDto) {
+    public ResponseEntity<ByteArrayResource> getFile(FileRequestDto fileRequestDto) {
         FileDownloadDto fileDownloadDto = fileService.getFile(fileRequestDto);
 
         if (fileRequestDto.getFileName().getBytes().length > fileRequestDto.getFileName().length()) {
@@ -52,41 +52,39 @@ public class FileController {
             return "redirect:/";
         }
         fileService.uploadFile(objectDto);
+
         redirectAttributes.addFlashAttribute("uploadFileSuccess", "Operation successful");
-        return "redirect:/";
+        String folderPath = objectDto.getFolderPath();
+        return "redirect:/?path=" +  getRedirectPath(folderPath);
     }
 
     //todo DeleteMapping with JS
     @GetMapping("/delete")
-    public String deleteFile(FileRequestDto fileRequestDto,
-                             RedirectAttributes redirectAttributes) {
+    public String deleteFile(FileRequestDto fileRequestDto) {
+
         fileService.deleteFile(fileRequestDto);
-
-        FolderRequestDto folderRequestDto = getFileLocation(fileRequestDto);
-
-        FolderContentDto folderContentDto = folderService.getFolderContent(folderRequestDto);
-        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
-        return "redirect:/";
+        String folderPath = getFileLocation(fileRequestDto).getFolderPath();
+        return "redirect:/?path=" + getRedirectPath(folderPath);
     }
 
     //todo PutMapping with JS
     @GetMapping("/rename")
-    public String renameFolder(FileRenameDto dto,
-                               RedirectAttributes redirectAttributes) {
+    public String renameFolder(FileRenameDto dto) {
 
         fileService.renameFile(dto);
-        FolderRequestDto folderRequestDto = getFileLocation(dto);
-
-        FolderContentDto folderContentDto = folderService.getFolderContent(folderRequestDto);
-        redirectAttributes.addFlashAttribute("folderContentDto", folderContentDto);
-        return "redirect:/";
+        String folderPath = getFileLocation(dto).getFolderPath();
+        return "redirect:/?path=" + getRedirectPath(folderPath);
     }
 
     private FolderRequestDto getFileLocation(FileRequestDto dto) {
         String filePath = dto.getFilePath();
         String fileName = dto.getFileName();
 
-        String folderPath = filePath.substring(0, filePath.indexOf(fileName));
+        String folderPath = filePath == null ? "" : filePath.replace(fileName, "");
         return new FolderRequestDto(null, folderPath, dto.getUsername());
+    }
+
+    private String getRedirectPath(String path){
+        return path == null ? "" : path;
     }
 }

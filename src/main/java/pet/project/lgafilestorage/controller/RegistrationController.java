@@ -28,7 +28,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String verifyCredentials(@ModelAttribute("user") @Valid UserRegistrationDto userDto,
+    public String verifyCredentials(UserRegistrationDto userDto,
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()){
