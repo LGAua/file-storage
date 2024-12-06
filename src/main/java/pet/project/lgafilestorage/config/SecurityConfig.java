@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pet.project.lgafilestorage.service.UserDetailsServiceImpl;
 
 @Configuration
@@ -35,7 +37,9 @@ public class SecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource())
+                ).authorizeHttpRequests(auth -> auth
                         .requestMatchers("/file", "/folder", "/search").hasRole("USER")
                         .anyRequest().permitAll()
                 ).formLogin(login -> login
@@ -51,6 +55,16 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    private UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

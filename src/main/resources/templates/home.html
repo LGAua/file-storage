@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Storage</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/script.js"></script>
 </head>
 
 <body>
@@ -71,14 +70,13 @@
     <section class="section" sec:authorize="isAuthenticated()">
         <h2>File Upload</h2>
         <form method="post" th:action="@{/file}" th:object="${fileUploadDto}" enctype="multipart/form-data"
-              class="form" id="fileUploadForm">
+              class="form">
             <label for="uploadFilePanel">Upload File:</label>
             <input type="file" id="uploadFilePanel" name="file" th:field="*{file}" accept="multipart/form-data" required
                    class="input">
             <input name="username" th:value="${#authentication.name}" type="hidden">
             <button type="submit" class="btn">Upload File</button>
         </form>
-        <p id="uploadStatusPanel"></p>
         <div th:if="${uploadFileSuccess}" class="success-message" th:text="${uploadFileSuccess}"></div>
     </section>
 

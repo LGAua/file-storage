@@ -26,6 +26,7 @@ public class FileController {
 
     private final FileService fileService;
 
+    //todo BindingResult
     @GetMapping
     public ResponseEntity<ByteArrayResource> getFile(FileRequestDto fileRequestDto) {
         FileDownloadDto fileDownloadDto = fileService.getFile(fileRequestDto);
