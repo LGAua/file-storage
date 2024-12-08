@@ -7,25 +7,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pet.project.lgafilestorage.model.entity.User;
-import pet.project.lgafilestorage.repository.UserRepository;
+import pet.project.lgafilestorage.model.redis.UserRedis;
+import pet.project.lgafilestorage.repository.UserJpaRepository;
+import pet.project.lgafilestorage.repository.redis.UserRedisRepository;
 
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
+import static pet.project.lgafilestorage.util.UserConverter.toUserRedis;
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
+    private final UserRedisRepository userRedisRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
-
+        User user = userJpaRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User with email: " + email + "is not found");
         }
+        userRedisRepository.save(toUserRedis(user));
 
         Set<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(SimpleGrantedAuthority::new)

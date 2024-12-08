@@ -23,6 +23,12 @@ services:
       - "9000:9000"
       - "9090:9090"
 
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    hostname: localhost
+
 volumes:
   postgres-data:
   minio-data:

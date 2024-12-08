@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class UserRepositoryTest {
+class UserRedisRepositoryTest {
 
 
     //todo Добавить тест контейнер.
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userRepository;
 
     private final User userSavedInDatabase = User.builder()
             .username("existingUser")

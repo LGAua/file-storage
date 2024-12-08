@@ -13,12 +13,9 @@ import pet.project.lgafilestorage.exception.FolderOperationException;
 import pet.project.lgafilestorage.model.dto.MinioObjectDto;
 import pet.project.lgafilestorage.model.dto.file.*;
 import pet.project.lgafilestorage.model.dto.folder.FolderRequestDto;
-import pet.project.lgafilestorage.repository.UserRepository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -26,7 +23,7 @@ import java.util.Set;
 public class FileService {
 
     private final MinioClient minioClient;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Value("${minio.bucket.name}")
     private String defaultBucketName;
@@ -168,6 +165,6 @@ public class FileService {
     }
 
     private Long getIdByUsername(String username) {
-        return userRepository.findByUsername(username).getId();
+        return userService.findByUsername(username).getId();
     }
 }

@@ -23,7 +23,6 @@ public class FolderController {
 
     @GetMapping
     public String getFolder() {
-
         return "redirect:/";
     }
 
@@ -59,7 +58,6 @@ public class FolderController {
         return "redirect:/?path=" + getRedirectPath(folderPath);
     }
 
-    //todo DeleteMapping with JS
     @GetMapping("/delete")
     public String deleteFolder(FolderRequestDto folderRequestDto) {
 
@@ -69,7 +67,6 @@ public class FolderController {
     }
 
     // todo При переименовании пустой папки она удаляется
-    //todo PutMapping with JS
     @PutMapping("/rename")
     public String renameFolder(FolderRenameRequestDto dto, HttpServletRequest request) {
 

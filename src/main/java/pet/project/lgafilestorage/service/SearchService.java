@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import pet.project.lgafilestorage.exception.FileOperationException;
 import pet.project.lgafilestorage.model.dto.MinioObjectDto;
 import pet.project.lgafilestorage.model.dto.file.FileRequestDto;
-import pet.project.lgafilestorage.repository.UserRepository;
+import pet.project.lgafilestorage.repository.UserJpaRepository;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class SearchService {
 
     private final MinioClient minioClient;
-    private final UserRepository userRepository;
+    private final UserJpaRepository userRepository;
 
     @Value("${minio.bucket.name}")
     private String defaultBucketName;

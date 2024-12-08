@@ -16,7 +16,6 @@ import pet.project.lgafilestorage.model.dto.BreadCrumbDto;
 import pet.project.lgafilestorage.model.dto.MinioObjectDto;
 import pet.project.lgafilestorage.model.dto.file.FileResponseDto;
 import pet.project.lgafilestorage.model.dto.folder.*;
-import pet.project.lgafilestorage.repository.UserRepository;
 
 import java.io.*;
 import java.util.*;
@@ -28,7 +27,7 @@ import java.util.*;
 public class FolderService {
 
     private final MinioClient minioClient;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final FileService fileService;
 
     @Value("${minio.folder.name.template}")
@@ -237,6 +236,6 @@ public class FolderService {
     }
 
     private Long getIdByUsername(String username) {
-        return userRepository.findByUsername(username).getId();
+        return userService.findByUsername(username).getId();
     }
 }

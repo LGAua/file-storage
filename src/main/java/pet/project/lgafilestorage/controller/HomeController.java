@@ -6,15 +6,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pet.project.lgafilestorage.model.dto.MinioObjectDto;
 import pet.project.lgafilestorage.model.dto.file.FileRequestDto;
 import pet.project.lgafilestorage.model.dto.folder.*;
 import pet.project.lgafilestorage.model.dto.file.FileUploadDto;
-import pet.project.lgafilestorage.repository.UserRepository;
-import pet.project.lgafilestorage.service.FileService;
+import pet.project.lgafilestorage.repository.UserJpaRepository;
 import pet.project.lgafilestorage.service.FolderService;
-
-import java.util.Set;
+import pet.project.lgafilestorage.service.UserService;
 
 @Controller
 @RequestMapping("/")
@@ -22,7 +19,7 @@ import java.util.Set;
 public class HomeController {
 
     private final FolderService folderService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping
     public String homePage(@AuthenticationPrincipal User user,
@@ -30,7 +27,7 @@ public class HomeController {
                            Model model) {
 
         if (user != null) {
-            model.addAttribute("avatar", userRepository.findByUsername(user.getUsername()).getAvatarUrl());
+            model.addAttribute("avatar", userService.findByUsername(user.getUsername()).getAvatarUrl());
 
             FolderRequestDto folderRequestDto = new FolderRequestDto();
             folderRequestDto.setUsername(user.getUsername());

@@ -1,8 +1,6 @@
 package pet.project.lgafilestorage.controller;
 
 import io.minio.MinioClient;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -13,30 +11,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.client.RestTemplate;
 import pet.project.lgafilestorage.model.dto.file.FileDownloadDto;
 import pet.project.lgafilestorage.model.dto.file.FileRequestDto;
 import pet.project.lgafilestorage.model.dto.file.FileUploadDto;
-import pet.project.lgafilestorage.repository.UserRepository;
+import pet.project.lgafilestorage.repository.UserJpaRepository;
 import pet.project.lgafilestorage.service.FileService;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -57,7 +47,7 @@ class FileControllerTest {
     private FileService fileService;
 
     @Mock
-    private UserRepository userRepository;
+    private UserJpaRepository userRepository;
     @Mock
     private MinioClient minioClient;
 
