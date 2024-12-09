@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import pet.project.lgafilestorage.model.dto.file.FileRequestDto;
 import pet.project.lgafilestorage.model.dto.folder.*;
 import pet.project.lgafilestorage.model.dto.file.FileUploadDto;
-import pet.project.lgafilestorage.repository.UserJpaRepository;
 import pet.project.lgafilestorage.service.FolderService;
 import pet.project.lgafilestorage.service.UserService;
 
@@ -24,6 +23,7 @@ public class HomeController {
     @GetMapping
     public String homePage(@AuthenticationPrincipal User user,
                            @RequestParam(required = false) String path,
+                           @ModelAttribute("redirectFolderPath") String redirectPath,
                            Model model) {
 
         if (user != null) {
@@ -32,6 +32,8 @@ public class HomeController {
             FolderRequestDto folderRequestDto = new FolderRequestDto();
             folderRequestDto.setUsername(user.getUsername());
             folderRequestDto.setFolderPath(path);
+
+            if (!redirectPath.isEmpty()) folderRequestDto.setFolderPath(redirectPath);
 
             FolderContentDto folderContentDto = folderService.getFolderContent(folderRequestDto);
             model.addAttribute("folderContentDto", folderContentDto);

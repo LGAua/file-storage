@@ -46,7 +46,7 @@
                 <form method="post" th:action="@{/file}" enctype="multipart/form-data" class="form">
                     <label for="folderName">Upload file:</label>
                     <input name="file" accept="multipart/form-data" class="input" required type="file">
-                    <input name="folderPath" th:value="${folderContentDto.folderPath}" type="hidden">
+                    <input name="filePath" th:value="${folderContentDto.folderPath}" type="hidden">
                     <input name="username" th:value="${#authentication.name}" type="hidden">
                     <button type="submit" class="btn">Upload file</button>
                 </form>
@@ -62,6 +62,9 @@
                 </div>
 
                 <div th:if="${folderContentDto.objects.isEmpty()}">Folder is empty</div>
+                <div th:each="error : ${bindingErrors}">
+                    <div style="color:red" th:text="${error.defaultMessage}"></div>
+                </div>
             </div>
         </section>
     </div>
@@ -79,7 +82,7 @@
         </form>
         <div th:if="${uploadFileSuccess}" class="success-message" th:text="${uploadFileSuccess}"></div>
     </section>
-
+    <!--    th:if="!${param.path}"-->
     <!-- Folder Upload Section -->
     <section class="section" sec:authorize="isAuthenticated()">
         <h2>Folder Upload</h2>

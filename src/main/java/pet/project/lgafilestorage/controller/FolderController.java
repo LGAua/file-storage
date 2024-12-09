@@ -1,7 +1,5 @@
 package pet.project.lgafilestorage.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,9 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pet.project.lgafilestorage.model.dto.folder.*;
 import pet.project.lgafilestorage.service.FolderService;
-
-import java.net.http.HttpRequest;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,13 +31,10 @@ public class FolderController {
         }
         folderService.uploadFolder(folderUploadDto);
 
-        redirectAttributes.addFlashAttribute("uploadFolderSuccess", "Operation successful");
-
-        String folderPath = folderUploadDto.getFolderPath();
-        return "redirect:/?path=" + getRedirectPath(folderPath);
+        redirectAttributes.addFlashAttribute("redirectFolderPath", getFolderLocation(folderUploadDto));
+        return "redirect:/";
     }
 
-    // todo При создании файла сюда почему то приходит folderPath корневой папки. На клиенте валидный путь, а сюда приходит измененный
     @PostMapping("/new-folder")
     public String createFile(@Valid FolderRequestDto dto,
                              BindingResult bindingResult,
@@ -52,40 +44,46 @@ public class FolderController {
             return "redirect:/";
         }
         String newPath = dto.getFolderPath() + dto.getFolderName() + "/";
-        FolderRequestDto folderDto = folderService.createFolder(new FolderRequestDto(dto.getFolderName(), newPath, dto.getUsername()));
+        folderService.createFolder(new FolderRequestDto(dto.getFolderName(), newPath, dto.getUsername()));
 
-        String folderPath = folderDto.getFolderPath();
-        return "redirect:/?path=" + getRedirectPath(folderPath);
+        redirectAttributes.addFlashAttribute("redirectFolderPath", dto.getFolderPath());
+        return "redirect:/";
     }
 
     @GetMapping("/delete")
-    public String deleteFolder(FolderRequestDto folderRequestDto) {
+    public String deleteFolder(FolderRequestDto folderRequestDto, RedirectAttributes redirectAttributes) {
 
         folderService.deleteFolder(folderRequestDto);
-        String folderPath = folderRequestDto.getFolderPath();
-        return "redirect:/?path=" + getRedirectPath(folderPath);
+
+        redirectAttributes.addFlashAttribute("redirectFolderPath", getFolderLocation(folderRequestDto));
+        return "redirect:/";
     }
 
-    // todo При переименовании пустой папки она удаляется
-    @PutMapping("/rename")
-    public String renameFolder(FolderRenameRequestDto dto, HttpServletRequest request) {
+    @GetMapping("/rename")
+    public String renameFolder(@Valid FolderRenameRequestDto dto,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
 
-        Map<String, String[]> parameterMap = request.getParameterMap();
+        redirectAttributes.addFlashAttribute("redirectFolderPath", getFolderLocation(dto));
+
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("bindingErrors", bindingResult.getAllErrors());
+            return "redirect:/";
+        }
+
         folderService.renameFolder(dto);
-        String folderPath = getFolderLocation(dto).getFolderPath();
-        return "redirect:/?path=" + getRedirectPath(folderPath);
+
+        return "redirect:/";
     }
 
-    private FolderRequestDto getFolderLocation(FolderRequestDto dto) {
-        String folderPath = dto.getFolderPath();
-        String folderName = dto.getFolderName();
-        String folderLocation = folderPath.replace(folderName + "/", "");
-        dto.setFolderPath(folderLocation);
+    private String getFolderLocation(FolderRequestDto dto) {
+        String path = dto.getFolderPath();
+        String name = dto.getFolderName();
 
-        return dto;
-    }
-
-    private String getRedirectPath(String path){
-        return path == null ? "" : path;
+        if (path != null && name != null &&
+                !path.isEmpty() && !name.isEmpty()) {
+            return path.substring(0, path.lastIndexOf(name));
+        }
+        return "";
     }
 }

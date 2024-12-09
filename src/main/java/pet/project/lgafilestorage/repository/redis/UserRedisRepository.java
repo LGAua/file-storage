@@ -18,8 +18,9 @@ public class UserRedisRepository {
         return Optional.ofNullable(user);
     }
 
+
     public void save(UserRedis user) {
-        user.setTimeout(5 * 60L);
+        user.setTimeout(10L);
         redisTemplate.opsForValue().set(user.getUsername(), user);
     }
 }

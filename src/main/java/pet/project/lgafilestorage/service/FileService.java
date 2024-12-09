@@ -33,8 +33,8 @@ public class FileService {
 
     public void uploadFile(FileUploadDto fileUploadDto) {
         MultipartFile file = fileUploadDto.getFile();
-        String path = createAbsolutePath(fileUploadDto.getUsername(), fileUploadDto.getFolderPath());
-        fileUploadDto.setFolderPath(path);
+        String path = createAbsolutePath(fileUploadDto.getUsername(), fileUploadDto.getFilePath());
+        fileUploadDto.setFilePath(path);
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()
@@ -44,8 +44,8 @@ public class FileService {
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .build());
         } catch (Exception e) {
-            log.error("Can not save file: %s".formatted(fileUploadDto.getFolderPath()));
-            throw new FileOperationException("Can not save file: %s".formatted(fileUploadDto.getFolderPath()));
+            log.error("Can not save file: %s".formatted(fileUploadDto.getFilePath()));
+            throw new FileOperationException("Can not save file: %s".formatted(fileUploadDto.getFilePath()));
         }
     }
 
@@ -132,7 +132,7 @@ public class FileService {
     }
 
     public void renameFile(FileRenameDto dto) {
-        String fileName = dto.getFileName().substring(0, dto.getFileName().indexOf("."));
+        String fileName = dto.getFileName().substring(0, dto.getFileName().lastIndexOf("."));
         String newPath = dto.getFilePath().replace(fileName, dto.getFileNewName());
         try {
             minioClient.copyObject(
@@ -153,14 +153,16 @@ public class FileService {
         deleteFile(dto);
     }
 
-    private String getObjectFullName(String objectPath) {
-        String[] strings = objectPath.split("/");
-        return strings[strings.length - 1];
-    }
-
     private String createAbsolutePath(String username, String folderPath) {
         Long id = getIdByUsername(username);
-        String path = folderPath == null ? rootFolderName : folderPath;
+
+        String path;
+        if (folderPath == null || folderPath.isEmpty()) {
+            path = rootFolderName;
+        } else {
+            path = folderPath;
+        }
+
         return path.formatted(id);
     }
 

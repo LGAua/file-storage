@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileUploadDto {
-
-    private String folderPath;
+public class FileUploadDto extends FileRequestDto {
 
     @NotNull(message = "You must specify the file to upload")
     private MultipartFile file;
 
-    private String username;
+    public String getFileName(){
+        return file.getOriginalFilename();
+    }
 }

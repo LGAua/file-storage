@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,18 +23,19 @@ import pet.project.lgafilestorage.service.FolderService;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/file")
-public class FileController {
+public class FileController { //todo добавить валидацию
 
     private final FileService fileService;
 
-    //todo BindingResult
     @GetMapping
     public ResponseEntity<ByteArrayResource> getFile(FileRequestDto fileRequestDto) {
         FileDownloadDto fileDownloadDto = fileService.getFile(fileRequestDto);
 
         if (fileRequestDto.getFileName().getBytes().length > fileRequestDto.getFileName().length()) {
-            fileRequestDto.setFileName("file");
+            String fileName = fileRequestDto.getFileName();
+            fileRequestDto.setFileName("file" + getFileExtension(fileName));
         }
+
         return ResponseEntity.ok()
                 .header(
                         HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileRequestDto.getFileName()
@@ -43,7 +45,6 @@ public class FileController {
                 .body(fileDownloadDto.getFile());
     }
 
-    //todo Cannot upload
     @PostMapping
     public String uploadFile(@Valid @ModelAttribute("fileUploadDto") FileUploadDto objectDto,
                              BindingResult bindingResult,
@@ -54,38 +55,50 @@ public class FileController {
         }
         fileService.uploadFile(objectDto);
 
-        redirectAttributes.addFlashAttribute("uploadFileSuccess", "Operation successful");
-        String folderPath = objectDto.getFolderPath();
-        return "redirect:/?path=" +  getRedirectPath(folderPath);
+        redirectAttributes.addFlashAttribute("redirectFolderPath", getFileLocation(objectDto));
+        return "redirect:/";
     }
 
-    //todo DeleteMapping with JS
     @GetMapping("/delete")
-    public String deleteFile(FileRequestDto fileRequestDto) {
+    public String deleteFile(FileRequestDto fileRequestDto, RedirectAttributes redirectAttributes) {
 
         fileService.deleteFile(fileRequestDto);
-        String folderPath = getFileLocation(fileRequestDto).getFolderPath();
-        return "redirect:/?path=" + getRedirectPath(folderPath);
+
+        redirectAttributes.addFlashAttribute("redirectFolderPath", getFileLocation(fileRequestDto));
+        return "redirect:/";
     }
 
-    //todo PutMapping with JS
     @GetMapping("/rename")
-    public String renameFolder(FileRenameDto dto) {
+    public String renameFile(@Valid FileRenameDto dto,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("redirectFolderPath", getFileLocation(dto));
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("bindingErrors", bindingResult.getAllErrors());
+            return "redirect:/";
+        }
 
         fileService.renameFile(dto);
-        String folderPath = getFileLocation(dto).getFolderPath();
-        return "redirect:/?path=" + getRedirectPath(folderPath);
+        return "redirect:/";
     }
 
-    private FolderRequestDto getFileLocation(FileRequestDto dto) {
-        String filePath = dto.getFilePath();
-        String fileName = dto.getFileName();
+    private String getFileLocation(FileRequestDto dto) {
+        String path = dto.getFilePath();
+        String name = dto.getFileName();
 
-        String folderPath = filePath == null ? "" : filePath.replace(fileName, "");
-        return new FolderRequestDto(null, folderPath, dto.getUsername());
+        if (path != null && name != null &&
+                !path.isEmpty() && !name.isEmpty()) {
+
+            if (!path.contains(name)) {
+                return path;
+            }
+            return path.substring(0, path.lastIndexOf(name));
+        }
+        return "";
     }
 
-    private String getRedirectPath(String path){
-        return path == null ? "" : path;
+    private String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 }

@@ -7,21 +7,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0d9f3cdd-fe59-4ba3-8e94-07f9e6b6126b" name="Changes" comment="Refactoring &amp; fixing bugs">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptors/FileSizeFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="0d9f3cdd-fe59-4ba3-8e94-07f9e6b6126b" name="Changes" comment="Add redis for session and caching users">
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/annotations/FileRenameDuplicateNames.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/annotations/FolderRenameDuplicateNames.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/validators/FileDuplicateNamesValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/validators/FolderDuplicateNamesValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/WebConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/exception/GlobalExceptionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/exception/GlobalExceptionAdvice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptors/ContentFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptors/ContentLengthInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptors/ContentLengthInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileRenameDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileRenameDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileUploadDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileUploadDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/folder/FolderRenameRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/folder/FolderRenameRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/redis/UserRedisRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/redis/UserRedisRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/script.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/components/folder-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/components/folder-card.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/components/search-field.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/components/search-field.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +41,7 @@
         <option value="HTML File" />
         <option value="JUnit5 Test Class" />
         <option value="JavaScript File" />
+        <option value="AnnotationType" />
         <option value="Class" />
       </list>
     </option>
@@ -95,7 +100,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/user/Desktop/New-File-Storage/src/main/java/pet/project/lgafilestorage",
+    "last_directory_selection": "C:/Users/user/Desktop/New-File-Storage/src/main/java/pet/project/lgafilestorage/constraints",
     "last_opened_file_path": "C:/Users/user/Desktop/New-File-Storage/src/main/resources",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -113,6 +118,9 @@
     ]
   }
 }]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="pet.project.hlib2filestorage.model.dto.file" />
@@ -145,6 +153,8 @@
       <recent name="pet.project.hlib2filestorage.controller" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pet.project.lgafilestorage.constraints" />
+      <recent name="pet.project.lgafilestorage.constraints.annotations" />
       <recent name="pet.project.hlib2filestorage.model.dto.folder" />
     </key>
   </component>
@@ -160,22 +170,6 @@
       <option name="PACKAGE_NAME" value="pet.project.lgafilestorage.controller" />
       <option name="MAIN_CLASS_NAME" value="pet.project.lgafilestorage.controller.FileControllerTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FileControllerTest.getFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="New-File-Storage" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pet.project.lgafilestorage.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pet.project.lgafilestorage.controller" />
-      <option name="MAIN_CLASS_NAME" value="pet.project.lgafilestorage.controller.FileControllerTest" />
-      <option name="METHOD_NAME" value="getFile" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -242,21 +236,29 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
       <item itemvalue="JUnit.FileControllerTest.uploadFile" />
       <item itemvalue="JUnit.FileControllerTest" />
-      <item itemvalue="JUnit.FileControllerTest.getFile" />
       <item itemvalue="JUnit.FileControllerTest.httpGetRequestForFile_ResponseStatusOk" />
       <item itemvalue="JUnit.LoginControllerTest.securityLoginValidCredentials" />
       <item itemvalue="Spring Boot.FileStorage" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
         <item itemvalue="JUnit.FileControllerTest.uploadFile" />
         <item itemvalue="JUnit.LoginControllerTest.securityLoginValidCredentials" />
         <item itemvalue="JUnit.FileControllerTest" />
         <item itemvalue="JUnit.FileControllerTest.httpGetRequestForFile_ResponseStatusOk" />
-        <item itemvalue="JUnit.FileControllerTest.getFile" />
       </list>
     </recent_temporary>
   </component>
@@ -280,7 +282,7 @@
       <workItem from="1731570885927" duration="148987000" />
       <workItem from="1732703593558" duration="20351000" />
       <workItem from="1732855121686" duration="63401000" />
-      <workItem from="1733463765333" duration="12982000" />
+      <workItem from="1733463765333" duration="58656000" />
     </task>
     <task id="LOCAL-00001" summary="Create models">
       <option name="closed" value="true" />
@@ -378,7 +380,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733398824146</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Refactoring &amp; fixing bugs">
+      <option name="closed" value="true" />
+      <created>1733479780534</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1733479780534</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add redis for session and caching users">
+      <option name="closed" value="true" />
+      <created>1733644568714</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1733644568714</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,7 +426,8 @@
     <MESSAGE value="Additional HTML components" />
     <MESSAGE value="Fix rename of folder and creation of folder feature" />
     <MESSAGE value="Refactoring &amp; fixing bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring &amp; fixing bugs" />
+    <MESSAGE value="Add redis for session and caching users" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add redis for session and caching users" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -451,11 +470,6 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
           <line>37</line>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
-          <line>40</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -465,92 +479,77 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
-          <line>26</line>
+          <line>20</line>
           <option name="timeStamp" value="200" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
-          <line>67</line>
-          <option name="timeStamp" value="221" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
-          <line>65</line>
+          <line>64</line>
           <option name="timeStamp" value="222" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
-          <line>67</line>
+          <line>66</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
-          <line>54</line>
+          <line>55</line>
           <option name="timeStamp" value="226" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>41</line>
+          <line>38</line>
           <option name="timeStamp" value="230" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>51</line>
+          <line>48</line>
           <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
-          <line>148</line>
+          <line>140</line>
           <option name="timeStamp" value="276" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
-          <line>122</line>
-          <option name="timeStamp" value="286" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
-          <line>50</line>
+          <line>51</line>
           <option name="timeStamp" value="289" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>37</line>
+          <line>34</line>
           <option name="timeStamp" value="290" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
-          <line>127</line>
+          <line>119</line>
           <option name="timeStamp" value="291" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
-          <line>33</line>
+          <line>27</line>
           <option name="timeStamp" value="293" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
-          <line>41</line>
-          <option name="timeStamp" value="294" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>138</line>
+          <line>135</line>
           <option name="timeStamp" value="297" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>153</line>
+          <line>150</line>
           <option name="timeStamp" value="298" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>152</line>
+          <line>149</line>
           <option name="timeStamp" value="299" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>125</line>
+          <line>122</line>
           <option name="timeStamp" value="300" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -560,22 +559,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
-          <line>55</line>
+          <line>46</line>
           <option name="timeStamp" value="327" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java</url>
-          <line>48</line>
+          <line>47</line>
           <option name="timeStamp" value="334" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
-          <line>69</line>
+          <line>61</line>
           <option name="timeStamp" value="341" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>50</line>
+          <line>47</line>
           <option name="timeStamp" value="342" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -594,48 +593,23 @@
           <option name="timeStamp" value="356" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="362" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
-          <line>65</line>
+          <line>76</line>
           <option name="timeStamp" value="365" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="366" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
-          <line>65</line>
+          <line>55</line>
           <option name="timeStamp" value="367" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
-          <line>78</line>
-          <option name="timeStamp" value="368" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="382" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
-          <line>72</line>
-          <option name="timeStamp" value="383" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/pet/project/lgafilestorage/controller/FileControllerTest.java</url>
-          <line>66</line>
+          <line>56</line>
           <option name="timeStamp" value="389" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/pet/project/lgafilestorage/controller/FileControllerTest.java</url>
-          <line>87</line>
+          <line>77</line>
           <option name="timeStamp" value="391" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -664,18 +638,253 @@
           <option name="timeStamp" value="412" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/exception/GlobalExceptionAdvice.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="414" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptors/FileSizeFilter.java</url>
           <line>21</line>
           <option name="timeStamp" value="416" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/exception/GlobalExceptionAdvice.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="417" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/exception/GlobalExceptionAdvice.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="418" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/session/spring-session-data-redis/3.3.3/spring-session-data-redis-3.3.3.jar!/org/springframework/session/data/redis/RedisSessionRepository.class</url>
+          <line>197</line>
+          <option name="timeStamp" value="421" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-redis/3.3.5/spring-data-redis-3.3.5.jar!/org/springframework/data/redis/core/RedisTemplate.class</url>
+          <line>48</line>
+          <option name="timeStamp" value="427" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-redis/3.3.5/spring-data-redis-3.3.5.jar!/org/springframework/data/redis/connection/lettuce/LettuceConnectionFactory.class</url>
+          <line>133</line>
+          <option name="timeStamp" value="429" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-redis/3.3.5/spring-data-redis-3.3.5.jar!/org/springframework/data/redis/connection/lettuce/LettuceConnectionFactory.class</url>
+          <line>170</line>
+          <option name="timeStamp" value="430" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-redis/3.3.5/spring-data-redis-3.3.5.jar!/org/springframework/data/redis/connection/lettuce/LettuceConnectionFactory.class</url>
+          <line>175</line>
+          <option name="timeStamp" value="431" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/session/spring-session-core/3.3.3/spring-session-core-3.3.3.jar!/org/springframework/session/MapSessionRepository.class</url>
+          <line>17</line>
+          <option name="timeStamp" value="433" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/session/spring-session-core/3.3.3/spring-session-core-3.3.3.jar!/org/springframework/session/MapSessionRepository.class</url>
+          <line>25</line>
+          <option name="timeStamp" value="434" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/session/spring-session-core/3.3.3/spring-session-core-3.3.3.jar!/org/springframework/session/MapSessionRepository.class</url>
+          <line>30</line>
+          <option name="timeStamp" value="435" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/session/spring-session-core/3.3.3/spring-session-core-3.3.3.jar!/org/springframework/session/MapSessionRepository.class</url>
+          <line>40</line>
+          <option name="timeStamp" value="436" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/session/spring-session-core/3.3.3/spring-session-core-3.3.3.jar!/org/springframework/session/MapSessionRepository.class</url>
+          <line>58</line>
+          <option name="timeStamp" value="437" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/session/spring-session-core/3.3.3/spring-session-core-3.3.3.jar!/org/springframework/session/MapSessionRepository.class</url>
+          <line>64</line>
+          <option name="timeStamp" value="438" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.jdks/jbr-17.0.12/lib/src.zip!/java.base/java/time/Duration.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="441" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.jdks/jbr-17.0.12/lib/src.zip!/java.base/java/time/Duration.java</url>
+          <line>133</line>
+          <option name="timeStamp" value="442" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="448" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserDetailsServiceImpl.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="453" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="458" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="461" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="462" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="465" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="468" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="469" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="470" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="474" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="475" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="478" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
+          <line>138</line>
+          <option name="timeStamp" value="479" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
+          <line>118</line>
+          <option name="timeStamp" value="481" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/validators/FileDuplicateNamesValidator.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="483" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/validators/FolderDuplicateNamesValidator.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="484" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="485" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
+          <line>115</line>
+          <option name="timeStamp" value="486" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="487" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java</url>
+          <line>191</line>
+          <option name="timeStamp" value="488" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
+          <line>116</line>
+          <option name="timeStamp" value="489" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
+          <line>129</line>
+          <option name="timeStamp" value="490" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="491" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="492" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="493" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="494" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="496" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="497" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="498" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java</url>
+          <line>123</line>
+          <option name="timeStamp" value="501" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>101</line>
+          <option name="timeStamp" value="502" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="503" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="504" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/pet/project/lgafilestorage/controller/FileControllerTest.java</url>
-          <line>86</line>
+          <line>76</line>
           <properties class="pet.project.lgafilestorage.controller.FileControllerTest" method="httpGetRequestForFile_ResponseStatusOk">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -686,10 +895,9 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
-        <watch expression="request.getContentLength()" />
-        <watch expression="MAX_FILE_SIZE" />
-        <watch expression="request.getContentLength()" language="JAVA" />
-        <watch expression="request.getHeaderNames()" language="JAVA" />
+        <watch expression="getFileExtension(fileName)" />
+        <watch expression="getFileLocation(dto)" />
+        <watch expression="userPrincipal.getName()" />
       </configuration>
     </watches-manager>
   </component>

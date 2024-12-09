@@ -37,18 +37,13 @@ public class FolderService {
     private String defaultBucketName;
 
     public void uploadFolder(FolderUploadDto dto) {
-        if (dto.getFolder() == null || dto.getFolder().isEmpty()) { //??
-            createFolder(dto);
-            return;
-        }
-
         try {
             for (MultipartFile file : dto.getFolder()) {
                 minioClient.putObject(
                         PutObjectArgs.builder()
                                 .bucket(defaultBucketName)
                                 .contentType(file.getContentType())
-                                .object(createAbsolutePath(dto))
+                                .object(createAbsolutePath(dto) + file.getOriginalFilename())
                                 .stream(file.getInputStream(), file.getSize(), -1)
                                 .build());
             }
@@ -58,8 +53,6 @@ public class FolderService {
         }
     }
 
-    //todo Folder is not created if one of folders already has folderCounter value (the same folder name)
-    // (Occurs after deleting multiple folders and creating them again)
     public FolderRequestDto createFolder(FolderRequestDto dto) {
         String folderLocation = getFolderLocation(dto);
         int folderCounter = getAmountOfDuplicateFolders(dto, folderLocation);
@@ -149,6 +142,7 @@ public class FolderService {
     private List<MinioObjectDto> getAllObjectsWithGivenRoot(FolderRequestDto dto) {
         List<MinioObjectDto> allObjectsInsideFolder = new ArrayList<>();
         List<MinioObjectDto> folderContent = getFolderContent(dto).getObjects();
+
         for (MinioObjectDto objectDto : folderContent) {
             if (objectDto.isDir()) {
                 FolderRequestDto folderRequestDto = new FolderRequestDto(objectDto.getObjectName(), objectDto.getObjectPath(), dto.getUsername());
