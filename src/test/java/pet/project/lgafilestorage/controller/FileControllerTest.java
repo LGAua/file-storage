@@ -63,7 +63,7 @@ class FileControllerTest {
     void uploadFile() throws IOException {
         byte[] picture = new byte[8];
         MockMultipartFile file = new MockMultipartFile("picture", "user_picture", "image/png", picture);
-        FileUploadDto fileUploadDto = new FileUploadDto("folder/picture", file, "testUser");
+        FileUploadDto fileUploadDto = new FileUploadDto();
         ResponseEntity<String> responseEntity = testRestTemplateWithAuth.postForEntity(URL, fileUploadDto, String.class);
 
         FileDownloadDto savedFile =

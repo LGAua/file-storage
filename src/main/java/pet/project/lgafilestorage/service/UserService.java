@@ -11,14 +11,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pet.project.lgafilestorage.config.BucketConfig;
 import pet.project.lgafilestorage.model.dto.auth.UserRegistrationDto;
+import pet.project.lgafilestorage.model.entity.AvatarPicture;
+import pet.project.lgafilestorage.model.entity.Role;
 import pet.project.lgafilestorage.model.entity.User;
 import pet.project.lgafilestorage.model.redis.UserRedis;
+import pet.project.lgafilestorage.repository.AvatarPictureRepository;
+import pet.project.lgafilestorage.repository.RoleRepository;
 import pet.project.lgafilestorage.repository.redis.UserRedisRepository;
 import pet.project.lgafilestorage.repository.UserJpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static pet.project.lgafilestorage.model.enums.Role.ROLE_USER;
 import static pet.project.lgafilestorage.util.UserConverter.toUserJpa;
 import static pet.project.lgafilestorage.util.UserConverter.toUserRedis;
 
@@ -30,20 +36,31 @@ public class UserService {
 
     private final UserJpaRepository userRepository;
     private final UserRedisRepository redisRepository;
+    private final AvatarPictureRepository avatarPictureRepository;
+    private final RoleRepository roleRepository;
+
     private final PasswordEncoder encoder;
     private final MinioClient minioClient;
     private final BucketConfig bucketConfig;
 
     public void save(UserRegistrationDto dto) {
+
+        AvatarPicture avatarPicture = avatarPictureRepository.save(saveAvatarImage(dto));
+
         User user = userRepository.save(
                 User.builder()
                         .username(dto.getUsername())
                         .email(dto.getEmail())
                         .password(encoder.encode(dto.getPassword()))
-                        .avatarUrl(saveAvatarImage(dto))
-                        .roles(Set.of("ROLE_USER"))
-                        .build()
-        );
+                        .avatarPicture(avatarPicture)
+                        .build());
+
+        Role role = roleRepository.save(Role.builder()
+                .role(ROLE_USER.name())
+                .user(user)
+                .build());
+
+        user.setRoles(List.of(role));
 
         redisRepository.save(toUserRedis(user));
     }
@@ -61,12 +78,12 @@ public class UserService {
         return toUserJpa(userRedis.get());
     }
 
-    private String saveAvatarImage(UserRegistrationDto dto) {
+    private AvatarPicture saveAvatarImage(UserRegistrationDto dto) {
         MultipartFile avatar = dto.getFile();
-        String avatarFileName = dto.getUsername() + "-" + avatar.getName();
+        String avatarFileName = dto.getUsername() + "-" + avatar.getOriginalFilename();
 
         try {
-            ObjectWriteResponse response = minioClient.putObject(
+            minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketConfig.getBucketName())
                             .object(FOLDER_FOR_AVATAR_STORAGE + avatarFileName)
@@ -74,12 +91,19 @@ public class UserService {
                             .contentType(avatar.getContentType())
                             .build());
 
-            return minioClient.getPresignedObjectUrl(
+            String objectUrl = minioClient.getPresignedObjectUrl(
                     GetPresignedObjectUrlArgs.builder()
                             .bucket(bucketConfig.getBucketName())
                             .object(FOLDER_FOR_AVATAR_STORAGE + avatarFileName)
                             .method(Method.GET)
                             .build());
+
+            return AvatarPicture.builder()
+                    .url(objectUrl)
+                    .name(avatarFileName)
+                    .contentType(avatar.getContentType())
+                    .contentSize(avatar.getSize())
+                    .build();
 
         } catch (Exception e) {
             throw new RuntimeException("Can not save the user avatar: " + e.getMessage());

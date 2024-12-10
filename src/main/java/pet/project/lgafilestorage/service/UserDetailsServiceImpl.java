@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pet.project.lgafilestorage.model.entity.Role;
 import pet.project.lgafilestorage.model.entity.User;
 import pet.project.lgafilestorage.model.redis.UserRedis;
 import pet.project.lgafilestorage.repository.UserJpaRepository;
@@ -32,6 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userRedisRepository.save(toUserRedis(user));
 
         Set<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+                .map(Role::getRole)
                 .map(SimpleGrantedAuthority::new)
                 .collect(toSet());
 

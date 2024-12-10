@@ -7,26 +7,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0d9f3cdd-fe59-4ba3-8e94-07f9e6b6126b" name="Changes" comment="Add redis for session and caching users">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/annotations/FileRenameDuplicateNames.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/annotations/FolderRenameDuplicateNames.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/validators/FileDuplicateNamesValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/constraints/validators/FolderDuplicateNamesValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java" afterDir="false" />
+    <list default="true" id="0d9f3cdd-fe59-4ba3-8e94-07f9e6b6126b" name="Changes" comment="Fix file download bug. Add Validation.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/entity/AvatarPicture.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/entity/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/enums/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/redis/AvatarPictureRedis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/redis/RoleRedis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/AvatarPictureRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/RoleRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/config/WebConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileRenameDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileRenameDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileUploadDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/file/FileUploadDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/folder/FolderRenameRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/dto/folder/FolderRenameRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/redis/UserRedisRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/redis/UserRedisRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/FolderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/RegistrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/RegistrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/redis/UserRedis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/model/redis/UserRedis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/UserJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/repository/UserJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/util/UserConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/util/UserConverter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/components/search-field.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/components/search-field.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/components/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/components/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pet/project/lgafilestorage/controller/FileControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pet/project/lgafilestorage/controller/FileControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +44,7 @@
         <option value="JUnit5 Test Class" />
         <option value="JavaScript File" />
         <option value="AnnotationType" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -100,7 +103,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/user/Desktop/New-File-Storage/src/main/java/pet/project/lgafilestorage/constraints",
+    "last_directory_selection": "C:/Users/user/Desktop/New-File-Storage/src/main/java/pet/project/lgafilestorage/model",
     "last_opened_file_path": "C:/Users/user/Desktop/New-File-Storage/src/main/resources",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -282,7 +285,7 @@
       <workItem from="1731570885927" duration="148987000" />
       <workItem from="1732703593558" duration="20351000" />
       <workItem from="1732855121686" duration="63401000" />
-      <workItem from="1733463765333" duration="58656000" />
+      <workItem from="1733463765333" duration="78264000" />
     </task>
     <task id="LOCAL-00001" summary="Create models">
       <option name="closed" value="true" />
@@ -396,7 +399,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733644568714</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Fix file download bug. Add Validation.">
+      <option name="closed" value="true" />
+      <created>1733744339782</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1733744339782</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -427,7 +438,8 @@
     <MESSAGE value="Fix rename of folder and creation of folder feature" />
     <MESSAGE value="Refactoring &amp; fixing bugs" />
     <MESSAGE value="Add redis for session and caching users" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add redis for session and caching users" />
+    <MESSAGE value="Fix file download bug. Add Validation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix file download bug. Add Validation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -439,17 +451,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/RegistrationController.java</url>
-          <line>35</line>
+          <line>36</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/RegistrationController.java</url>
-          <line>40</line>
+          <line>41</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/RegistrationController.java</url>
-          <line>38</line>
+          <line>39</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -464,12 +476,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/RegistrationController.java</url>
-          <line>33</line>
+          <line>34</line>
           <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
-          <line>37</line>
+          <line>49</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -564,7 +576,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java</url>
-          <line>47</line>
+          <line>49</line>
           <option name="timeStamp" value="334" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -591,11 +603,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
           <line>87</line>
           <option name="timeStamp" value="356" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
-          <line>76</line>
-          <option name="timeStamp" value="365" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FolderController.java</url>
@@ -718,13 +725,8 @@
           <option name="timeStamp" value="442" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="448" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserDetailsServiceImpl.java</url>
-          <line>27</line>
+          <line>28</line>
           <option name="timeStamp" value="453" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -749,7 +751,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/HomeController.java</url>
-          <line>35</line>
+          <line>37</line>
           <option name="timeStamp" value="468" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -869,18 +871,43 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
-          <line>101</line>
-          <option name="timeStamp" value="502" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/controller/FileController.java</url>
           <line>82</line>
           <option name="timeStamp" value="503" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserDetailsServiceImpl.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="505" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="504" />
+          <line>24</line>
+          <option name="timeStamp" value="506" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="508" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/service/UserService.java</url>
+          <line>100</line>
+          <option name="timeStamp" value="509" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/util/UserConverter.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="510" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="517" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pet/project/lgafilestorage/interceptor/UrlInjectionSecurityChecker.java</url>
+          <line>37</line>
+          <option name="timeStamp" value="518" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/pet/project/lgafilestorage/controller/FileControllerTest.java</url>
@@ -893,12 +920,5 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="SpringBootApplicationConfigurationType">
-        <watch expression="getFileExtension(fileName)" />
-        <watch expression="getFileLocation(dto)" />
-        <watch expression="userPrincipal.getName()" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

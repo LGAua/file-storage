@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pet.project.lgafilestorage.model.dto.file.FileRequestDto;
 import pet.project.lgafilestorage.model.dto.folder.*;
 import pet.project.lgafilestorage.model.dto.file.FileUploadDto;
+import pet.project.lgafilestorage.model.entity.AvatarPicture;
 import pet.project.lgafilestorage.service.FolderService;
 import pet.project.lgafilestorage.service.UserService;
 
@@ -27,7 +28,8 @@ public class HomeController {
                            Model model) {
 
         if (user != null) {
-            model.addAttribute("avatar", userService.findByUsername(user.getUsername()).getAvatarUrl());
+            AvatarPicture avatarPicture = userService.findByUsername(user.getUsername()).getAvatarPicture();
+            model.addAttribute("avatar", avatarPicture.getUrl());
 
             FolderRequestDto folderRequestDto = new FolderRequestDto();
             folderRequestDto.setUsername(user.getUsername());
@@ -47,5 +49,4 @@ public class HomeController {
 
         return "home";
     }
-    //todo Check username from security and username in dto. To prevent access to folders of other users.
 }

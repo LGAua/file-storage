@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.util.List;
 import java.util.Set;
 
 @RedisHash(value = "user")
@@ -28,9 +29,9 @@ public class UserRedis {
 
     private String password;
 
-    private String avatarUrl;
+    private AvatarPictureRedis avatarPicture;
 
-    private Set<String> roles;
+    private List<RoleRedis> roles;
 
     @TimeToLive
     private Long timeout;

@@ -1,20 +1,20 @@
 package pet.project.lgafilestorage.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
+import lombok.*;
+import org.hibernate.collection.spi.PersistentBag;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor()
 @NoArgsConstructor
 @Builder
+@Entity
 @Table(name = "users")
 public class User {
 
@@ -30,9 +30,11 @@ public class User {
 
     private String password;
 
-    // Create AvatarMetaInfo
-    private String avatarUrl;
+    @OneToOne
+    @JoinColumn(name = "avatar_picture_id")
+    private AvatarPicture avatarPicture;
 
-    //todo role entity in db
-    private Set<String> roles;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Role> roles;
 }
+
