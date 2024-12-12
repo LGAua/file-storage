@@ -58,12 +58,11 @@ public class FileService {
         try (GetObjectResponse object = minioClient.getObject(getObjectArgs)) {
             String contentType = object.headers().get("Content-type");
             String contentLength = object.headers().get("Content-length");
-            assert contentLength != null;
 
             return new FileDownloadDto(
                     new ByteArrayResource(object.readAllBytes()),
                     contentType,
-                    Long.parseLong(contentLength)
+                    Long.parseLong(contentLength != null ? contentLength : "0")
             );
         } catch (Exception e) {
             throw new FileOperationException("Can not get the file. " + e.getMessage());

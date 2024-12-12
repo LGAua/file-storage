@@ -15,3 +15,10 @@ public class FileStorage {
 	}
 
 }
+
+//TODO :
+// 1. Tests
+// 2. Actuator
+// 3. HTML modal
+// 4. Refactor
+// 5. Deploy

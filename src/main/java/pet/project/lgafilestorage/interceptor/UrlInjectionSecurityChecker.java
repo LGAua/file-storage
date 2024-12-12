@@ -23,19 +23,20 @@ public class UrlInjectionSecurityChecker implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String path = request.getParameter("path");
-        if (path == null) {
+        Principal userPrincipal = request.getUserPrincipal();
+
+        if (path == null || userPrincipal == null) {
             return true;
         }
-        // user-4-files/
-        String pathId = path.substring(5, path.lastIndexOf("-files"));
-        Principal userPrincipal = request.getUserPrincipal();
+
         User user = userService.findByUsername(userPrincipal.getName());
+        String pathId = path.substring(5, path.lastIndexOf("-files"));
 
         if (user.getId() == Long.parseLong(pathId)) {
             return true;
         }
 
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access to files of other users is forbidden");
         return false;
     }
 }

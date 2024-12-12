@@ -23,7 +23,7 @@ import pet.project.lgafilestorage.service.UserDetailsServiceImpl;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsService userDetailsServiceImpl;
 
     @Bean
     public PasswordEncoder passwordEncoder() {

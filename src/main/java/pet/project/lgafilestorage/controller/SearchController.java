@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pet.project.lgafilestorage.model.dto.MinioObjectDto;
 import pet.project.lgafilestorage.model.dto.file.FileRequestDto;
-import pet.project.lgafilestorage.service.FileService;
 import pet.project.lgafilestorage.service.SearchService;
 
 import java.util.Set;

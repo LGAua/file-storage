@@ -21,6 +21,7 @@ public class FolderController {
         return "redirect:/";
     }
 
+    //todo check size limitations exception
     @PostMapping
     public String uploadFolder(@Valid @ModelAttribute("folderUploadDto") FolderUploadDto folderUploadDto,
                                BindingResult bindingResult,

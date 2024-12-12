@@ -3,6 +3,7 @@ package pet.project.lgafilestorage.service;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
+import io.minio.RemoveBucketArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,23 @@ public class BucketService {
                             .bucket(bucketName.toLowerCase())
                             .build());
         } catch (Exception e) {
-            log.error("Can not create folder");
+            log.error("Can not create bucket ({}): {}", bucketName, e.getMessage());
             throw new FileOperationException("Can not create the bucket: " + bucketName, e.getCause());
         }
     }
+
+    public void deleteBucket(String bucketName) {
+        try {
+            minioClient.removeBucket(
+                    RemoveBucketArgs.builder()
+                            .bucket(bucketName.toLowerCase())
+                            .build());
+        } catch (Exception e) {
+            log.error("Can not delete bucket ({}): {}", bucketName, e.getMessage());
+            throw new FileOperationException("Can not delete the bucket: " + bucketName, e.getCause());
+        }
+    }
+
 
     public boolean isExist(String bucketName) {
         try {

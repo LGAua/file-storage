@@ -19,6 +19,4 @@ public class MinioClientConfig {
                 .credentials(minioClientProperties.getUsername(), minioClientProperties.getPassword())
                 .build();
     }
-
-
 }

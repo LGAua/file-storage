@@ -2,7 +2,7 @@
     <div sec:authorize="isAuthenticated()">
         <span th:text="${#authentication.name}">User</span>
         <span><a href="/logout">Logout</a></span>
-        <img sizes="50px, 50px" th:src="${avatar}">
+        <img alt="avatar_picture" sizes="(max-height: 100px) 200px" th:src="${avatar}">
     </div>
 
     <div sec:authorize="!isAuthenticated()">

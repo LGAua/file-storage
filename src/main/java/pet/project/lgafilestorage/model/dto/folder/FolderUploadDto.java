@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor()
 @Setter
 @Getter
 public class FolderUploadDto extends FolderRequestDto {
@@ -19,4 +19,9 @@ public class FolderUploadDto extends FolderRequestDto {
     @Size(min = 1, message = "Empty folder upload is not supported")
     @NotNull(message = "You must specify the folder to upload")
     private List<MultipartFile> folder;
+
+    public FolderUploadDto(String folderName, String folderPath, String username, List<MultipartFile> folder) {
+        super(folderName, folderPath, username);
+        this.folder = folder;
+    }
 }

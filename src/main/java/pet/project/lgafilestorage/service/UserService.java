@@ -6,10 +6,14 @@ import io.minio.ObjectWriteResponse;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import pet.project.lgafilestorage.config.BucketConfig;
+import pet.project.lgafilestorage.exception.DatabaseException;
 import pet.project.lgafilestorage.model.dto.auth.UserRegistrationDto;
 import pet.project.lgafilestorage.model.entity.AvatarPicture;
 import pet.project.lgafilestorage.model.entity.Role;
@@ -43,26 +47,30 @@ public class UserService {
     private final MinioClient minioClient;
     private final BucketConfig bucketConfig;
 
+//    @Transactional(rollbackFor = DataIntegrityViolationException.class)
     public void save(UserRegistrationDto dto) {
+        try {
+            AvatarPicture avatarPicture = avatarPictureRepository.save(saveAvatarImage(dto));
 
-        AvatarPicture avatarPicture = avatarPictureRepository.save(saveAvatarImage(dto));
+            User user = userRepository.save(
+                    User.builder()
+                            .username(dto.getUsername())
+                            .email(dto.getEmail())
+                            .password(encoder.encode(dto.getPassword()))
+                            .avatarPicture(avatarPicture)
+                            .build());
 
-        User user = userRepository.save(
-                User.builder()
-                        .username(dto.getUsername())
-                        .email(dto.getEmail())
-                        .password(encoder.encode(dto.getPassword()))
-                        .avatarPicture(avatarPicture)
-                        .build());
+            Role role = roleRepository.save(Role.builder()
+                    .role(ROLE_USER.name())
+                    .user(user)
+                    .build());
 
-        Role role = roleRepository.save(Role.builder()
-                .role(ROLE_USER.name())
-                .user(user)
-                .build());
+            user.setRoles(List.of(role));
 
-        user.setRoles(List.of(role));
-
-        redisRepository.save(toUserRedis(user));
+            redisRepository.save(toUserRedis(user));
+        } catch (Exception e) {
+            throw new DatabaseException("Unable to save user: " + e.getMessage());
+        }
     }
 
     public User findByUsername(String username) {
@@ -70,11 +78,14 @@ public class UserService {
 
         if (userRedis.isEmpty()) {
             User userJpa = userRepository.findByUsername(username);
-            redisRepository.save(toUserRedis(userJpa));
 
+            if (userJpa == null){
+                throw new UsernameNotFoundException("User does not exist");
+            }
+
+            redisRepository.save(toUserRedis(userJpa));
             return userJpa;
         }
-
         return toUserJpa(userRedis.get());
     }
 
@@ -109,4 +120,6 @@ public class UserService {
             throw new RuntimeException("Can not save the user avatar: " + e.getMessage());
         }
     }
+
+    //todo private builders for entities
 }
