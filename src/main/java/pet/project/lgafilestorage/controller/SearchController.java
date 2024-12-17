@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pet.project.lgafilestorage.model.dto.MinioObjectDto;
 import pet.project.lgafilestorage.model.dto.file.FileRequestDto;
+import pet.project.lgafilestorage.model.entity.AvatarPicture;
 import pet.project.lgafilestorage.service.SearchService;
+import pet.project.lgafilestorage.service.UserService;
 
 import java.util.Set;
 
@@ -20,6 +22,7 @@ import java.util.Set;
 public class SearchController {
 
     private final SearchService searchService;
+    private final UserService userService;
 
     @GetMapping
     public String searchPage(@AuthenticationPrincipal User user,
@@ -29,6 +32,9 @@ public class SearchController {
         if (user == null) {
             return "redirect:/sign-in";
         }
+
+        AvatarPicture avatarPicture = userService.findByUsername(user.getUsername()).getAvatarPicture();
+        model.addAttribute("avatar", avatarPicture.getUrl());
 
         if (objectName != null && !objectName.isEmpty()) {
             FileRequestDto fileRequestDto = new FileRequestDto();
@@ -41,5 +47,4 @@ public class SearchController {
 
         return "search";
     }
-
 }

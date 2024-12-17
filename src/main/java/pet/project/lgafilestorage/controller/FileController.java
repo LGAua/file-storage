@@ -28,7 +28,15 @@ public class FileController { //todo добавить валидацию
     private final FileService fileService;
 
     @GetMapping
-    public ResponseEntity<ByteArrayResource> getFile(FileRequestDto fileRequestDto) {
+    public ResponseEntity<ByteArrayResource> getFile(@Valid FileRequestDto fileRequestDto,
+                                                     BindingResult bindingResult,
+                                                     RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("bindingError", bindingResult.getFieldErrors());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
         FileDownloadDto fileDownloadDto = fileService.getFile(fileRequestDto);
 
         if (fileRequestDto.getFileName().getBytes().length > fileRequestDto.getFileName().length()) {

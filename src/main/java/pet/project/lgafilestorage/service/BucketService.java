@@ -20,7 +20,7 @@ public class BucketService {
         try {
             minioClient.makeBucket(
                     MakeBucketArgs.builder()
-                            .bucket(bucketName.toLowerCase())
+                            .bucket(bucketName)
                             .build());
         } catch (Exception e) {
             log.error("Can not create bucket ({}): {}", bucketName, e.getMessage());
@@ -32,7 +32,7 @@ public class BucketService {
         try {
             minioClient.removeBucket(
                     RemoveBucketArgs.builder()
-                            .bucket(bucketName.toLowerCase())
+                            .bucket(bucketName)
                             .build());
         } catch (Exception e) {
             log.error("Can not delete bucket ({}): {}", bucketName, e.getMessage());
@@ -49,7 +49,7 @@ public class BucketService {
                             .build());
         } catch (Exception e) {
             log.error("Can not check folder existence");
-            throw new FileOperationException("Can not check bucket existence: " + bucketName, e.getCause());
+            throw new FileOperationException("Can not check bucket existence: " + e.getMessage(), e.getCause());
         }
     }
 }

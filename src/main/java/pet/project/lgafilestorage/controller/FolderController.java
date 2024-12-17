@@ -52,7 +52,13 @@ public class FolderController {
     }
 
     @GetMapping("/delete")
-    public String deleteFolder(FolderRequestDto folderRequestDto, RedirectAttributes redirectAttributes) {
+    public String deleteFolder(@Valid FolderRequestDto folderRequestDto,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("fileErrors", bindingResult.getFieldErrors());
+            return "redirect:/";
+        }
 
         folderService.deleteFolder(folderRequestDto);
 
@@ -67,7 +73,7 @@ public class FolderController {
 
         redirectAttributes.addFlashAttribute("redirectFolderPath", getFolderLocation(dto));
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("bindingErrors", bindingResult.getAllErrors());
             return "redirect:/";
         }

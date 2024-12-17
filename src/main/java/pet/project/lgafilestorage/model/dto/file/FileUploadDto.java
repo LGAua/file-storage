@@ -17,7 +17,12 @@ public class FileUploadDto extends FileRequestDto {
     @NotNull(message = "You must specify the file to upload")
     private MultipartFile file;
 
-    public String getFileName(){
+    public FileUploadDto(MultipartFile file, String fileName, String filePath, String username) {
+        super(fileName, filePath, username);
+        this.file = file;
+    }
+
+    public String getFileName() {
         return file.getOriginalFilename();
     }
 }

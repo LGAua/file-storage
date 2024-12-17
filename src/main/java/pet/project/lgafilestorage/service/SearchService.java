@@ -20,7 +20,7 @@ import java.util.Set;
 public class SearchService {
 
     private final MinioClient minioClient;
-    private final UserJpaRepository userRepository;
+    private final UserService userService;
 
     @Value("${minio.bucket.name}")
     private String defaultBucketName;
@@ -52,7 +52,7 @@ public class SearchService {
         return searchResult;
     }
 
-    public Iterable<Result<Item>> getUserObjects(FileRequestDto dto) {
+    private Iterable<Result<Item>> getUserObjects(FileRequestDto dto) {
         return minioClient.listObjects(
                 ListObjectsArgs.builder()
                         .bucket(defaultBucketName)
@@ -68,7 +68,7 @@ public class SearchService {
     }
 
     private String createRootPath(String username) {
-        Long id = userRepository.findByUsername(username).getId();
+        Long id = userService.findByUsername(username).getId();
         return rootFolderName.formatted(id);
     }
 }

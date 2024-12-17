@@ -36,6 +36,21 @@ public class FolderService {
     @Value("${minio.bucket.name}")
     private String defaultBucketName;
 
+    public FolderContentDto getFolderContent(FolderRequestDto dto) {
+        List<MinioObjectDto> objects = new ArrayList<>();
+
+        objects.addAll(getFoldersInsideFolder(dto));
+        objects.addAll(fileService.getFilesInsideFolder(dto));
+
+        String folderPath = createAbsolutePath(dto);
+
+        return new FolderContentDto(
+                folderPath,
+                createBreadCrumbs(folderPath),
+                objects
+        );
+    }
+
     public void uploadFolder(FolderUploadDto dto) {
         try {
             for (MultipartFile file : dto.getFolder()) {
@@ -76,21 +91,6 @@ public class FolderService {
 
         dto.setFolderPath(folderLocation);
         return dto;
-    }
-
-    public FolderContentDto getFolderContent(FolderRequestDto dto) {
-        List<MinioObjectDto> objects = new ArrayList<>();
-
-        objects.addAll(getFoldersInsideFolder(dto));
-        objects.addAll(fileService.getFilesInsideFolder(dto));
-
-        String folderPath = createAbsolutePath(dto);
-
-        return new FolderContentDto(
-                folderPath,
-                createBreadCrumbs(folderPath),
-                objects
-        );
     }
 
     public void deleteFolder(FolderRequestDto folderRequestDto) {

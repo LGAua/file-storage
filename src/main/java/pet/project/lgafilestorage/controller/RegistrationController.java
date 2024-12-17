@@ -27,7 +27,6 @@ public class RegistrationController {
         return "sign-up";
     }
 
-    //todo duplicate emails db exception
     @PostMapping
     public String verifyCredentials(UserRegistrationDto userDto,
                                     BindingResult bindingResult,

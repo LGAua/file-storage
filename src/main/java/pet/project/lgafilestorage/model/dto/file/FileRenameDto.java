@@ -15,5 +15,6 @@ import pet.project.lgafilestorage.constraints.annotations.FileRenameDuplicateNam
 @FileRenameDuplicateNames
 public class FileRenameDto extends FileRequestDto {
 
+    @NotBlank
     private String fileNewName;
 }

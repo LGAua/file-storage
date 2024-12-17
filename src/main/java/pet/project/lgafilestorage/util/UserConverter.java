@@ -11,29 +11,39 @@ import static java.util.stream.Collectors.toList;
 
 public class UserConverter {
     public static UserRedis toUserRedis(User userJpa) {
-        return UserRedis.builder()
+        UserRedis userRedis = UserRedis.builder()
                 .id(userJpa.getId().toString())
                 .username(userJpa.getUsername())
                 .email(userJpa.getEmail())
                 .password(userJpa.getPassword())
-                .avatarPicture(avatarPictureBuilder(userJpa))
                 .roles(userJpa.getRoles().stream()
                         .map(role -> new RoleRedis(role.getId(), role.getRole()))
                         .collect(toList()))
                 .build();
+
+        if (userJpa.getAvatarPicture() != null) {
+            userRedis.setAvatarPicture(avatarPictureBuilder(userJpa));
+        }
+
+        return userRedis;
     }
 
     public static User toUserJpa(UserRedis userRedis) {
-        return User.builder()
+        User user = User.builder()
                 .id(Long.parseLong(userRedis.getId()))
                 .username(userRedis.getUsername())
                 .email(userRedis.getEmail())
                 .password(userRedis.getPassword())
-                .avatarPicture(avatarPictureBuilder(userRedis))
                 .roles(userRedis.getRoles().stream()
                         .map(roleRedis -> new Role(roleRedis.getId(), roleRedis.getRole()))
                         .collect(toList()))
                 .build();
+
+        if (userRedis.getAvatarPicture() != null) {
+            user.setAvatarPicture(avatarPictureBuilder(userRedis));
+        }
+
+        return user;
     }
 
     private static AvatarPicture avatarPictureBuilder(UserRedis userRedis) {

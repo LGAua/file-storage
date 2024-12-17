@@ -11,7 +11,12 @@ import pet.project.lgafilestorage.constraints.annotations.FolderRenameDuplicateN
 @NoArgsConstructor
 @AllArgsConstructor
 @FolderRenameDuplicateNames
-public class FolderRenameRequestDto extends FolderRequestDto{
+public class FolderRenameRequestDto extends FolderRequestDto {
 
     private String folderNewName;
+
+    public FolderRenameRequestDto(String folderNewName, String folderName, String folderPath, String username) {
+        super(folderName, folderPath, username);
+        this.folderNewName = folderNewName;
+    }
 }
