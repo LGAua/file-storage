@@ -42,8 +42,15 @@ public class SearchService {
                 if (objectPath.toLowerCase().contains(searchName.toLowerCase())
                         && (name.toLowerCase()).contains(searchName.toLowerCase())) {
 
+                    MinioObjectDto minioObjectDto = new MinioObjectDto();
+                    if (isDir(objectPath)) {
+                        minioObjectDto.setDir(true);
+                    }
+
                     String path = objectPath.substring(0, objectPath.lastIndexOf(name));
-                    searchResult.add(new MinioObjectDto(name, path));
+                    minioObjectDto.setObjectName(name);
+                    minioObjectDto.setObjectPath(path);
+                    searchResult.add(minioObjectDto);
                 }
             } catch (Exception e) {
                 throw new FileOperationException("Error during searching object with name " + dto.getObjectName());
@@ -70,5 +77,9 @@ public class SearchService {
     private String createRootPath(String username) {
         Long id = userService.findByUsername(username).getId();
         return rootFolderName.formatted(id);
+    }
+
+    private boolean isDir(String objectPath) {
+        return objectPath.endsWith("/");
     }
 }

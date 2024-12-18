@@ -1,19 +1,24 @@
-<div class="files">
-    <form method="get" th:action="@{/file}" class="form-inline" content="">
-        <div th:text="${object.objectName}" class="folder-name"></div>
-        <a th:if="${object.isDir} == false"
-           th:href="${'/file/delete?fileName=' + object.objectName + '&filePath=' + object.objectPath + '&username=' + #authentication.name}">Delete</a>
+<div class="file-card">
+    <div class="file-icon">📄</div>
+    <div class="file-name" th:text="${object.objectName}"></div>
+    <div class="dropdown">
+        <button class="dropdown-button">⋮</button>
+        <div class="dropdown-menu">
+            <form method="get" th:action="@{/file/rename}">
+                <input name="fileName" th:value="${object.objectName}" type="hidden">
+                <input name="filePath" th:value="${object.objectPath}" type="hidden">
+                <input name="username" th:value="${#authentication.name}" type="hidden">
+                <input type="text" name="fileNewName" placeholder="New Name" class="input-rename">
+                <button type="submit" class="dropdown-item">Rename</button>
+            </form>
+            <a th:href="${'/file/delete?fileName=' + object.objectName + '&filePath=' + object.objectPath + '&username=' + #authentication.name}"
+               class="dropdown-item">Delete</a>
+        </div>
+    </div>
+    <form method="get" th:action="@{/file}">
         <input name="fileName" th:value="${object.objectName}" type="hidden">
         <input name="filePath" th:value="${object.objectPath}" type="hidden">
         <input name="username" th:value="${#authentication.name}" type="hidden">
-        <button type="submit" class="btn-small">Download</button>
-    </form>
-    <form method="get" th:action="@{/file/rename}" id="renameForm"
-          class="form-inline">
-        <input type="text" id="fileNewName" name="fileNewName">
-        <input name="fileName" th:value="${object.objectName}" type="hidden">
-        <input name="filePath" th:value="${object.objectPath}" type="hidden">
-        <input name="username" th:value="${#authentication.name}" type="hidden">
-        <button type="submit" id="renameButton" class="btn-small">Rename</button>
+        <button type="submit" class="btn-download">Download</button>
     </form>
 </div>

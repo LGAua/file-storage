@@ -1,18 +1,22 @@
-<div class="folder">
-    <form method="get" th:action="@{/}" class="form-inline">
-        <div th:text="${object.objectName}" class="folder-name"></div>
-        <a th:if="${object.isDir} == true"
-           th:href="${'/folder/delete?folderName=' + object.objectName + '&folderPath=' + object.objectPath + '&username=' + #authentication.name}">Delete</a>
+<div class="folder-card">
+    <div class="folder-icon">📁</div>
+    <div class="folder-name" th:text="${object.objectName}"></div>
+    <div class="dropdown">
+        <button class="dropdown-button">⋮</button>
+        <div class="dropdown-menu">
+            <form method="get" th:action="@{/folder/rename}">
+                <input name="folderName" th:value="${object.objectName}" type="hidden">
+                <input name="folderPath" th:value="${object.objectPath}" type="hidden">
+                <input name="username" th:value="${#authentication.name}" type="hidden">
+                <input type="text" name="folderNewName" placeholder="New Name" class="input-rename">
+                <button type="submit" class="dropdown-item">Rename</button>
+            </form>
+            <a th:href="${'/folder/delete?folderName=' + object.objectName + '&folderPath=' + object.objectPath + '&username=' + #authentication.name}"
+               class="dropdown-item">Delete</a>
+        </div>
+    </div>
+    <form method="get" th:action="@{/}">
         <input name="path" th:value="${object.objectPath}" type="hidden">
-        <button type="submit" class="btn-small">Get Files</button>
-    </form>
-    <form th:if="${object.isDir} == true" method="get" id="renameFolderForm" th:action="@{/folder/rename}"
-          class="form-inline">
-        <label for="folderNewName"></label>
-        <input type="text" id="folderNewName" name="folderNewName">
-        <input name="folderName" id="folderOldName" th:value="${object.objectName}" type="hidden">
-        <input name="folderPath" id="renameFolderPath" th:value="${object.objectPath}" type="hidden">
-        <input name="username" id="renameFolderUsername" th:value="${#authentication.name}" type="hidden">
-        <button type="submit" class="btn-small">Rename</button>
+        <button type="submit" class="btn-open">Open</button>
     </form>
 </div>

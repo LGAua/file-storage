@@ -1,12 +1,12 @@
-<header>
-    <div sec:authorize="isAuthenticated()">
-        <span th:text="${#authentication.name}">User</span>
-        <span><a href="/logout">Logout</a></span>
+<header class="main-header">
+    <div class="auth-section" sec:authorize="isAuthenticated()">
         <img class="avatar" alt="avatar_picture" sizes="(max-height: 100px) 200px" th:src="${avatar}">
+        <span class="username" th:text="${#authentication.name}">User</span>
+        <a href="/logout" class="logout-btn">Logout</a>
     </div>
 
-    <div sec:authorize="!isAuthenticated()">
-        <span><a href="/sign-in">Login</a></span>
-        <span><a href="/sign-up">Register</a></span>
+    <div class="guest-section" sec:authorize="!isAuthenticated()">
+        <a href="/sign-in" class="auth-link">Login</a>
+        <a href="/sign-up" class="auth-link">Register</a>
     </div>
 </header>

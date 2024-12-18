@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class UrlInjectionSecurityChecker implements HandlerInterceptor {
 
-    private static final Pattern pattern = Pattern.compile("user-(\\d+)-");
     private final UserService userService;
 
     @Override

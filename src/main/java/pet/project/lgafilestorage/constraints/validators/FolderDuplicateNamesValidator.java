@@ -12,6 +12,10 @@ public class FolderDuplicateNamesValidator implements ConstraintValidator<Folder
         String oldName = value.getFolderName();
         String newName = value.getFolderNewName();
 
+        if (oldName == null || newName == null) {
+            return false;
+        }
+
         return !(oldName.isBlank() || newName.isBlank()) &&
                 (!oldName.equals(newName));
     }

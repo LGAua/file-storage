@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,18 +23,18 @@ public class MinioObjectDto {
 
     @Override
     public int hashCode() {
-        int PRIME = 31;
-        return this.getObjectName().hashCode() * this.getObjectPath().hashCode() * PRIME;
+        return Objects.hash(objectName, objectPath, isDir);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (obj.hashCode() == this.hashCode() || this == obj) return true;
+        if (this == obj) return true; // Сравнение на идентичность ссылок
+        if (obj == null || getClass() != obj.getClass()) return false; // Проверка на null и тип объекта
 
-        MinioObjectDto minioObj = (MinioObjectDto) obj;
+        MinioObjectDto other = (MinioObjectDto) obj;
 
-        return minioObj.getObjectName().equals(this.getObjectName()) &&
-                minioObj.getObjectPath().equals(this.getObjectName());
+        return Objects.equals(objectName, other.objectName) &&
+                Objects.equals(objectPath, other.objectPath) &&
+                isDir == other.isDir; // Сравнение всех полей
     }
 }

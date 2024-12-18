@@ -2,17 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="/css/search.css">
 </head>
 <body>
 <div th:replace="~{components/header}"></div>
 <div th:replace="~{components/search-field}"></div>
 
-<div th:if="${foundObjects}">
-    <div th:each="object : ${foundObjects}">
-        <a th:text="${object.objectName}" th:href="'/?path=' + ${object.objectPath}"></a>
-    </div>
-</div>
+<main class="search-results">
+    <h1 class="search-title">Search Results</h1>
 
+    <div th:if="${foundObjects}" class="results-grid">
+        <div th:each="object : ${foundObjects}" class="result-item">
+            <div class="result-icon">
+                <span th:if="${object.isDir}" class="icon-folder"></span>
+                <span th:if="!${object.isDir}" class="icon-file"></span>
+            </div>
+            <div class="result-name">
+                <a th:text="${object.objectName}" th:href="'/?path=' + ${object.objectPath}" class="result-link"></a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${foundObjects.isEmpty()}" class="no-results">
+        No results found for your search.
+    </div>
+</main>
 </body>
 </html>
