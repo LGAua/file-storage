@@ -40,7 +40,8 @@ public class SecurityConfig {
                 .cors(cors -> cors
                         .configurationSource(corsConfigurationSource())
                 ).authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/file", "/folder", "/search", "/actuator/**").hasRole("USER")
+                        .requestMatchers("/file", "/folder", "/search").hasRole("USER")
+                        .requestMatchers("/actuator/**").hasRole("PROMETHEUS")
                         .anyRequest().permitAll()
                 ).formLogin(login -> login
                         .loginPage("/sign-in")
